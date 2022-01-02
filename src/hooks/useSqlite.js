@@ -7,6 +7,7 @@ const TotalChanges = createContext(null);
 
 export function Context({
   database = ":memory:",
+  schema = [],
   placeholder = null,
   children,
 }) {
@@ -15,7 +16,10 @@ export function Context({
 
   useEffect(() => {
     const promise = open(database);
-    promise.then(setHandle);
+    promise.then((handle) => {
+      for (const query of schema) handle.query(query);
+      setHandle(handle);
+    });
     return () => promise.then((handle) => handle.close(true));
   }, []);
 
@@ -48,15 +52,19 @@ export function useRows(query, params) {
   const needsUpdate = cache.totalChanges !== totalChanges ||
     cache.params !== params;
 
+  // We don't set total changes here, to avoid the possibility
+  // of accidentally introducing an infinite loop. (And really,
+  // the queries provided to this function should not have any
+  // side-effects.)
   if (needsUpdate) cache.rows = stmt.allEntries(params);
   useEffect(() => {
-    if (needsUpdate) setCache({ ...cache });
+    if (needsUpdate) setCache({ ...cache, params, totalChanges });
   }, [totalChanges, params]);
 
   return cache.rows;
 }
 
-export function usePreparedQuery(query) {
+export function useQuery(query) {
   const db = useContext(Database);
   const [totalChanges, setTotalChanges] = useContext(TotalChanges);
   if (db == null) throw new Error("Database handle not initialized.");
