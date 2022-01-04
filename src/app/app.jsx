@@ -1,20 +1,21 @@
 import { h } from "preact";
+import schema from "@app/schema.js";
 import { Context, useQuery, useRows } from "@hooks/useSqlite.js";
 
-const schema = [
-  "CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT)",
-];
+function RowList() {
+  const rows = useRows("SELECT * FROM test");
+  return rows.map(({ id, title }) => <li key={id}>{title}</li>);
+}
 
 function RenderData() {
-  const rows = useRows("SELECT * FROM test");
+  const [{ total }] = useRows("SELECT COUNT(*) as total FROM test");
   const addRow = useQuery("INSERT INTO test (title) VALUES (:title)");
-
   return (
     <ul>
-      {rows.map(({ id, title }) => <li key={id}>{title}</li>)}
+      <RowList />
       <button
         onClick={() => {
-          addRow({ title: `Row #${rows.length + 1}` });
+          addRow({ title: `Row #${total + 1}` });
         }}
       >
         Add Row
