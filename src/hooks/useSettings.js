@@ -15,3 +15,21 @@ export default function useSettings() {
 
   return [settings, (key, value) => query({ key, value })];
 }
+
+/** Determine if the ui should be rendered with a dark appearance. */
+export function useDarkMode() {
+  const [{ darkmode }, set] = useSettings();
+  return [
+    darkmode != null ? !!darkmode : false,
+    (dark) => set("darkmode", !!dark),
+  ];
+}
+
+/** The currently active top level view. */
+export function useActiveView() {
+  const [{ activeview }, set] = useSettings();
+  return [
+    typeof activeview === "string" ? activeview : "today",
+    (viewName) => set("activeview", viewName.toString()),
+  ];
+}

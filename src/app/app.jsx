@@ -1,34 +1,34 @@
 import { h } from "preact";
+import { useEffect } from "preact/hooks";
+import { Context } from "@hooks/useSqlite.js";
+import { useActiveView, useDarkMode } from "@hooks/useSettings.js";
 import schema from "@app/schema.js";
-import { Context, useQuery, useRows } from "@hooks/useSqlite.js";
+import Sidebar from "@app/components/sidebar/mod.jsx";
+import ViewHeader from "@app/components/view_header.jsx";
 
-function RowList() {
-  const rows = useRows("SELECT * FROM test");
-  return rows.map(({ id, title }) => <li key={id}>{title}</li>);
-}
+function Navigation() {
+  const [darkMode] = useDarkMode();
+  useEffect(() => {
+    document.querySelector("html").classList.toggle("dark", darkMode);
+  }, [darkMode]);
 
-function RenderData() {
-  const [{ total }] = useRows("SELECT COUNT(*) as total FROM test");
-  const addRow = useQuery("INSERT INTO test (title) VALUES (:title)");
+  const [activeView] = useActiveView();
+
   return (
-    <ul>
-      <RowList />
-      <button
-        onClick={() => {
-          addRow({ title: `Row #${total + 1}` });
-        }}
-      >
-        Add Row
-      </button>
-    </ul>
+    <div class="flex w-full h-screen">
+      <Sidebar />
+      <div class="p-8">
+        <ViewHeader activeView={activeView} />
+        {activeView}
+      </div>
+    </div>
   );
 }
 
 export default function App() {
   return (
     <Context database="test.sqlite" schema={schema}>
-      <h1>Hello Stacey!</h1>
-      <RenderData />
+      <Navigation />
     </Context>
   );
 }

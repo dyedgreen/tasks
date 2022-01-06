@@ -6,7 +6,7 @@ export default {
     "@lib": "./src/lib",
   },
   devOptions: {
-    // tailwindConfig: "./tailwind.config.js",
+    tailwindConfig: "./tailwind.config.js",
   },
   buildOptions: {
     out: "dist",
@@ -20,5 +20,7 @@ export default {
     treeshake: true,
     target: "es2018",
   },
-  plugins: [],
+  plugins: [
+    "@snowpack/plugin-postcss",
+  ],
 };
