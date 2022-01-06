@@ -6,6 +6,8 @@ import schema from "@app/schema.js";
 import Sidebar from "@app/components/sidebar/mod.jsx";
 import ViewHeader from "@app/components/view_header.jsx";
 
+import Task from "@app/components/task/mod.jsx";
+
 function Navigation() {
   const [darkMode] = useDarkMode();
   useEffect(() => {
@@ -17,9 +19,9 @@ function Navigation() {
   return (
     <div class="flex w-full h-screen">
       <Sidebar />
-      <div class="p-8">
+      <div class="p-8 w-full space-y-4">
         <ViewHeader activeView={activeView} />
-        {activeView}
+        <Task id={0} title="This is a test todo" />
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ export default function Sidebar() {
     <navigation class="
       w-40 h-full
       flex flex-col justify-between p-2
-      dark:bg-slate-900 bg-gray-200 dark:text-white text-gray-900
+      dark:bg-slate-900 bg-gray-200 dark:text-white
     ">
       <div class="space-y-1">
         <h1 class="text-xl font-semibold mt-2 mb-3 px-2">Tasks</h1>
