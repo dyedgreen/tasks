@@ -25,6 +25,10 @@ function Closed({ id, title, _done, onOpen }) {
   );
 }
 
+function ChecklistItem({ id, title, done }) {
+  return;
+}
+
 function Open({ id, onClose }) {
   // FIXME: use task itself ...
   const [done, setDone] = useState(false);
@@ -43,11 +47,15 @@ function Open({ id, onClose }) {
           class="text-base font-medium mx-4 w-full bg-inherit"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          placeholder="Untitled To-Do"
         />
         <Button title="Done" onClick={onClose} />
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
-        <textarea class="min-h-[5em] bg-inherit text-sm">
+        <textarea
+          class="min-h-[5em] bg-inherit text-sm"
+          placeholder="Add notes"
+        >
           This is a test
         </textarea>
         <div class="flex justify-start space-x-4">

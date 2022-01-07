@@ -20,7 +20,7 @@ export default function Sidebar() {
   return (
     <navigation class="
       w-40 h-full
-      flex flex-col justify-between p-2
+      flex flex-col shrink-0 justify-between p-2
       dark:bg-slate-900 bg-gray-200 dark:text-white
     ">
       <div class="space-y-1">
