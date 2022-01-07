@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import Button from "@app/components/button.jsx";
+import { CheckCircle } from "@app/components/icons.jsx";
 import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
@@ -49,8 +50,9 @@ function Open({ id, onClose }) {
         <textarea class="min-h-[5em] bg-inherit text-sm">
           This is a test
         </textarea>
-        <div class="flex justify-start">
+        <div class="flex justify-start space-x-4">
           <DateInput value={date} onChange={setDate} />
+          <Button icon={<CheckCircle />} title="Checklist" flat />
         </div>
       </div>
     </div>
