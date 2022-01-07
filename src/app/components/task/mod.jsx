@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import Button from "@app/components/button.jsx";
-import DateInput from "@app/components/date_input.jsx";
+import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
 function Closed({ id, title, _done, onOpen }) {
@@ -49,7 +49,7 @@ function Open({ id, onClose }) {
         <textarea class="min-h-[5em] bg-inherit text-sm">
           This is a test
         </textarea>
-        <div class="flex justify-end">
+        <div class="flex justify-start">
           <DateInput value={date} onChange={setDate} />
         </div>
       </div>

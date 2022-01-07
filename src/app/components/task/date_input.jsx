@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
-import { Calendar, Trash } from "./icons.jsx";
+import useDate from "@hooks/useDate.js";
+import { Calendar, Trash } from "@app/components/icons.jsx";
 
 function toDate(string) {
   if (/^\d{4}-\d\d-\d\d$/.test(string)) {
@@ -19,17 +20,21 @@ function toString(date) {
   }
 }
 
-// FIXME: This is broken ...
 export default function DateInput({ value, onChange }) {
   const [showInput, setShowInput] = useState(false);
+  const date = useDate(value ?? new Date());
+
   if (showInput) {
     return (
-      <div class="flex h-8 px-2 rounded bg-slate-500">
+      <div class="flex h-8 px-2 rounded space-x-2 text-white bg-slate-500">
         <input
-          class="h-8 text-white bg-inherit"
+          class="h-8 bg-inherit"
           type="date"
-          value={toString(value)}
-          onChange={(e) => onChange(toDate(e.target.value))}
+          value=""
+          onBlur={(e) => {
+            onChange(toDate(e.target.value));
+            setShowInput(false);
+          }}
         />
         <button
           onClick={() => {
@@ -44,10 +49,19 @@ export default function DateInput({ value, onChange }) {
   } else {
     return (
       <button
-        class="w-8 h-8 text-slate-500"
+        class="flex h-8 justify-center items-center space-x-1"
         onClick={() => setShowInput(true)}
       >
-        <Calendar />
+        <Calendar class={value != null ? "text-red-500" : "text-slate-500"} />
+        <span
+          class={`text-sm font-semibold ${
+            value != null
+              ? "dark:text-slate-200 text-slate-700"
+              : "text-slate-500"
+          }`}
+        >
+          {value != null ? date : "Due Date"}
+        </span>
       </button>
     );
   }

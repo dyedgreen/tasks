@@ -3,8 +3,7 @@ import { h } from "preact";
 const CHECKED = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="1rem"
-    height="1rem"
+    class="h-4 w-4"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -19,8 +18,7 @@ const CHECKED = (
 const UNCHECKED = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="1rem"
-    height="1rem"
+    class="h-4 w-4"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -35,7 +33,7 @@ const UNCHECKED = (
 export default function SquareCheck({ checked, onChange }) {
   return (
     <button
-      class={`p-1 rounded-md dark:hover:bg-gray-900 hover:bg-gray-200 ${
+      class={`p-1 rounded-md dark:hover:bg-gray-700 hover:bg-gray-200 ${
         checked
           ? "dark:text-blue-400 text-blue-500"
           : "dark:text-gray-400 text-gray-500"
