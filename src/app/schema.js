@@ -14,7 +14,7 @@ const schema = [
     created     DATETIMETEXT NOT NULL,
     updated     DATETIMETEXT NOT NULL
   )`,
-  `CREATE TABLE IF NOT EXISTS subtasks (
+  `CREATE TABLE IF NOT EXISTS checklist (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     task        INTEGER NOT NULL REFERENCES tasks (id) ON DELETE CASCADE,
     title       TEXT NOT NULL,

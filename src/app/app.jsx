@@ -21,7 +21,8 @@ function Navigation() {
       <Sidebar />
       <div class="p-8 w-full space-y-4">
         <ViewHeader activeView={activeView} />
-        <Task id={0} title="This is a test todo" />
+        <Task id={0} title="Tell babe to go to Maven" />
+        <Task id={1} title="" />
       </div>
     </div>
   );
