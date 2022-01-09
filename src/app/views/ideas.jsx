@@ -6,7 +6,7 @@ export default function TodayView() {
   const taskIdeas = useRows(
     `SELECT id, title, done FROM tasks
      WHERE due IS NULL
-     ORDER BY created DESC`,
+     ORDER BY created ASC`,
   );
 
   return taskIdeas.map((task) => <Task key={task.id} {...task} />);

@@ -1,6 +1,6 @@
 import { createContext, h } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
-import { open } from "@lib/sqlite.js";
+import { init, open } from "@lib/sqlite.js";
 
 const Database = createContext(null);
 const TotalChanges = createContext(null);
@@ -15,7 +15,7 @@ export function Context({
   const changes = useState(0);
 
   useEffect(() => {
-    const promise = open(database);
+    const promise = init().then(() => open(database));
     promise.then((handle) => {
       for (const query of schema) handle.query(query);
       setHandle(handle);

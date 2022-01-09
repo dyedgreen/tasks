@@ -8,8 +8,8 @@ const schema = [
     title       TEXT NOT NULL,
     description TEXT,
     due         DATETIMETEXT,
-    deadline    DATETIMETEXT,
     done        DATETIMETEXT,
+    archived    DATETIMETEXT,
 
     created     DATETIMETEXT NOT NULL,
     updated     DATETIMETEXT NOT NULL
