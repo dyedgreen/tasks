@@ -6,6 +6,7 @@ import Sidebar from "@app/components/sidebar/mod.jsx";
 import ViewHeader from "@app/components/view_header.jsx";
 import Ideas from "@app/views/ideas.jsx";
 import Today from "@app/views/today.jsx";
+import Planned from "@app/views/planned.jsx";
 import schema from "@app/schema.js";
 
 function Navigation() {
@@ -24,6 +25,9 @@ function Navigation() {
     case "today":
       viewBody = <Today />;
       break;
+    case "planned":
+      viewBody = <Planned />;
+      break;
     default:
       viewBody = null;
       break;
@@ -32,7 +36,7 @@ function Navigation() {
   return (
     <div class="flex w-full h-screen">
       <Sidebar />
-      <div class="p-8 w-full space-y-4">
+      <div class="p-8 w-full space-y-4 overflow-y-auto">
         <ViewHeader activeView={activeView} />
         {viewBody}
       </div>

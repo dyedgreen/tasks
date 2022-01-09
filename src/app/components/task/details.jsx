@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { useQuery, useRows } from "@hooks/useSqlite.js";
 import useDebounced from "@hooks/useDebounced.js";
 import Button from "@app/components/button.jsx";
-import { CheckCircle, Trash } from "@app/components/icons.jsx";
+import { Archive, CheckCircle, Trash } from "@app/components/icons.jsx";
 import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
@@ -39,7 +39,10 @@ export default function Open({ id, onClose }) {
 
   const deleteQuery = useQuery(`DELETE FROM tasks WHERE id = :id`);
   const onDelete = () => {
-    if (confirm("Are you sure you want to delete this?")) deleteQuery({ id });
+    const isEmptyTask = !title?.length && !description?.length && !done;
+    if (isEmptyTask || confirm("Are you sure you want to delete this?")) {
+      deleteQuery({ id });
+    }
   };
 
   const dueQuery = useQuery(
@@ -99,7 +102,13 @@ export default function Open({ id, onClose }) {
             title="Checklist"
             onClick={() => alert("TODO")}
             flat
-          />{" "}
+          />
+          <Button
+            icon={<Archive />}
+            title="Archive"
+            onClick={() => alert("TODO")}
+            flat
+          />
           <Button
             icon={<Trash />}
             onClick={onDelete}

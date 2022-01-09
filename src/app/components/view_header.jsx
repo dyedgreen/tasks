@@ -25,8 +25,8 @@ export default function ViewHeader({ activeView }) {
       name = "Planned";
       icon = <Calendar class="w-6 h-6 text-red-500" />;
       break;
-    case "completed":
-      name = "Completed";
+    case "archive":
+      name = "Archive";
       icon = <Archive class="w-6 h-6 text-green-500" />;
       break;
     default:
@@ -62,13 +62,19 @@ export default function ViewHeader({ activeView }) {
         {icon}
         <h1 class="text-xl font-semibold dark:text-white">{name}</h1>
       </div>
-      {activeView != "completed" && (
-        <Button
-          icon={<Plus />}
-          title="New To-Do"
-          onClick={addEmptyTask}
-        />
-      )}
+      <div class="flex space-x-4 items-center">
+        {activeView != "archive" && (
+          <Button
+            icon={<Plus />}
+            title="New To-Do"
+            onClick={addEmptyTask}
+            flat
+          />
+        )}
+        {activeView != "archive" && (
+          <Button icon={<Archive />} title="Archive Completed" flat />
+        )}
+      </div>
     </div>
   );
 }

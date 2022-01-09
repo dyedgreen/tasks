@@ -1,4 +1,4 @@
-import { useNow } from "./useNow.js";
+import { useToday } from "./useNow.js";
 
 const DAYS = [
   "Sunday",
@@ -30,7 +30,7 @@ const DAY = 24 * HOUR;
 
 /** Returns a formatted relative date. */
 export default function useDate(date) {
-  const now = useNow(MIN);
+  const now = useToday(MIN);
   const dist = date.valueOf() - now.valueOf();
 
   if (Math.abs(dist) < DAY && now.getDate() === date.getDate()) {

@@ -61,10 +61,10 @@ export default function Sidebar() {
           title="Planned"
         />
         <Item
-          selected={activeView === "completed"}
-          onClick={() => setActiveView("completed")}
+          selected={activeView === "archive"}
+          onClick={() => setActiveView("archive")}
           icon={<Archive class="text-green-500" />}
-          title="Completed"
+          title="Archive"
         />
       </div>
       <div class="space-y-1">
