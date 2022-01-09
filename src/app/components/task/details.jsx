@@ -125,12 +125,6 @@ export default function Open({ id, onClose }) {
         <div class="flex justify-start space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />
           <Button
-            icon={<CheckCircle />}
-            title="Checklist"
-            onClick={() => alert("TODO")}
-            flat
-          />
-          <Button
             icon={<Archive />}
             title={archived ? "Un-Archive" : "Archive"}
             onClick={onArchive}
