@@ -68,7 +68,8 @@ export default function Open({ id, onClose }) {
   useEffect(() => {
     const onEvent = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
-        updateDueDateAndClose();
+        const sideBar = document.getElementById("sidebar");
+        if (!sideBar.contains(event.target)) updateDueDateAndClose();
       }
     };
     document.addEventListener("mousedown", onEvent);
