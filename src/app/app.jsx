@@ -7,6 +7,7 @@ import ViewHeader from "@app/components/view_header.jsx";
 import Ideas from "@app/views/ideas.jsx";
 import Today from "@app/views/today.jsx";
 import Planned from "@app/views/planned.jsx";
+import Archive from "@app/views/archive.jsx";
 import schema from "@app/schema.js";
 
 function Navigation() {
@@ -27,6 +28,9 @@ function Navigation() {
       break;
     case "planned":
       viewBody = <Planned />;
+      break;
+    case "archive":
+      viewBody = <Archive />;
       break;
     default:
       viewBody = null;

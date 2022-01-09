@@ -8,7 +8,7 @@ import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
 export default function Open({ id, onClose }) {
-  const [{ title, description, done, due }] = useRows(
+  const [{ title, description, done, due, archived }] = useRows(
     "SELECT * FROM tasks WHERE id = :id",
     { id },
   );
@@ -36,6 +36,14 @@ export default function Open({ id, onClose }) {
     description ?? "",
     (description) => descriptionQuery({ id, description, now: new Date() }),
   );
+
+  const archiveQuery = useQuery(
+    `UPDATE tasks SET archived = :archived, updated = :now WHERE id = :id`,
+  );
+  const onArchive = () => {
+    const now = new Date();
+    archiveQuery({ id, now, archived: archived != null ? null : now });
+  };
 
   const deleteQuery = useQuery(`DELETE FROM tasks WHERE id = :id`);
   const onDelete = () => {
@@ -105,8 +113,8 @@ export default function Open({ id, onClose }) {
           />
           <Button
             icon={<Archive />}
-            title="Archive"
-            onClick={() => alert("TODO")}
+            title={archived ? "Un-Archive" : "Archive"}
+            onClick={onArchive}
             flat
           />
           <Button

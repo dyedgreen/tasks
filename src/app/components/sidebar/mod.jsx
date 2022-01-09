@@ -22,13 +22,13 @@ export default function Sidebar() {
   const today = useToday();
   const [{ dueTodayCount }] = useRows(
     `SELECT COUNT(*) as dueTodayCount FROM tasks
-     WHERE due NOT NULL AND due <= :today AND done IS NULL`,
+     WHERE due NOT NULL AND due <= :today AND done IS NULL AND archived IS NULL`,
     { today },
   );
 
   const [{ ideasCount }] = useRows(
     `SELECT COUNT(*) as ideasCount FROM tasks
-     WHERE due IS NULL AND done IS NULL`,
+     WHERE due IS NULL AND done IS NULL AND archived IS NULL`,
   );
 
   return (
