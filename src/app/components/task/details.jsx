@@ -37,6 +37,23 @@ export default function Open({ id, onClose }) {
     (description) => descriptionQuery({ id, description, now: new Date() }),
   );
 
+  const descriptionRef = useRef();
+  useEffect(() => {
+    if (descriptionRef.current) {
+      descriptionRef.current.style.height = "auto";
+      descriptionRef.current.style.height =
+        descriptionRef.current.scrollHeight + "px";
+    }
+    const listener = (event) => {
+      if (descriptionRef.current === event.target) {
+        event.target.style.height = "auto";
+        event.target.style.height = event.target.scrollHeight + "px";
+      }
+    };
+    document.addEventListener("input", listener);
+    return () => document.removeEventListener("input", listener);
+  }, [descriptionRef]);
+
   const archiveQuery = useQuery(
     `UPDATE tasks SET archived = :archived, updated = :now WHERE id = :id`,
   );
@@ -99,7 +116,8 @@ export default function Open({ id, onClose }) {
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
         <textarea
-          class="min-h-[5em] bg-inherit text-sm"
+          ref={descriptionRef}
+          class="h-auto resize-none bg-inherit text-xs font-mono"
           placeholder="Add notes"
           value={descriptionInput}
           onInput={(e) => setDescriptionInput(e.target.value)}

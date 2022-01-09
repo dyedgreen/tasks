@@ -4,7 +4,7 @@ export default function useDebounced(initialState, update) {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    const id = setTimeout(() => update(state), 500);
+    const id = setTimeout(() => update(state), 250);
     return () => clearTimeout(id);
   }, [state]);
 
