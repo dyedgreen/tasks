@@ -14,5 +14,9 @@ export function useNow(updateEvery = 1000) {
 
 export function useToday() {
   const now = useNow(60 * 1000);
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  now.setHours(0);
+  now.setMinutes(0);
+  now.setSeconds(0);
+  now.setMilliseconds(0);
+  return now;
 }

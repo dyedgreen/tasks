@@ -5,9 +5,13 @@ import Details from "./details.jsx";
 import SquareCheck from "./square_check.jsx";
 
 function Closed({ id, title, done, onOpen }) {
-  const doneQuery = useQuery(`UPDATE tasks SET done = :done WHERE id = :id`);
-  const setDone = (isDone) =>
-    doneQuery({ done: isDone ? new Date() : null, id });
+  const doneQuery = useQuery(
+    `UPDATE tasks SET done = :done, updated = :now WHERE id = :id`,
+  );
+  const setDone = (isDone) => {
+    const now = new Date();
+    doneQuery({ id, done: isDone ? now : null, now });
+  };
 
   return (
     <div class="flex flex-row items-center w-full">

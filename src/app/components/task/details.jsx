@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { useQuery, useRows } from "@hooks/useSqlite.js";
 import useDebounced from "@hooks/useDebounced.js";
 import Button from "@app/components/button.jsx";
-import { CheckCircle } from "@app/components/icons.jsx";
+import { CheckCircle, Trash } from "@app/components/icons.jsx";
 import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
@@ -13,17 +13,36 @@ export default function Open({ id, onClose }) {
     { id },
   );
 
-  const doneQuery = useQuery(`UPDATE tasks SET done = :done WHERE id = :id`);
-  const setDone = (isDone) =>
-    doneQuery({ done: isDone ? new Date() : null, id });
+  const doneQuery = useQuery(
+    `UPDATE tasks SET done = :done, updated = :now WHERE id = :id`,
+  );
+  const setDone = (isDone) => {
+    const now = new Date();
+    doneQuery({ id, done: isDone ? now : null, now });
+  };
 
-  const titleQuery = useQuery(`UPDATE tasks SET title = :title WHERE id = :id`);
+  const titleQuery = useQuery(
+    `UPDATE tasks SET title = :title, updated = :now WHERE id = :id`,
+  );
   const [titleInput, setTitleInput] = useDebounced(
     title,
-    (title) => titleQuery({ id, title }),
+    (title) => titleQuery({ id, title, now: new Date() }),
+  );
+
+  const descriptionQuery = useQuery(
+    `UPDATE tasks SET description = :description, updated = :now WHERE id = :id`,
+  );
+  const [descriptionInput, setDescriptionInput] = useDebounced(
+    description ?? "",
+    (description) => descriptionQuery({ id, description, now: new Date() }),
   );
 
   const [dueInput, setDueInput] = useState(new Date(due));
+
+  const deleteQuery = useQuery(`DELETE FROM tasks WHERE id = :id`);
+  const onDelete = () => {
+    if (confirm("Are you sure you want to delete this?")) deleteQuery({ id });
+  };
 
   const ref = useRef();
   useEffect(() => {
@@ -59,15 +78,20 @@ export default function Open({ id, onClose }) {
         <textarea
           class="min-h-[5em] bg-inherit text-sm"
           placeholder="Add notes"
-        >
-          {description}
-        </textarea>
+          value={descriptionInput}
+          onInput={(e) => setDescriptionInput(e.target.value)}
+        />
         <div class="flex justify-start space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />
           <Button
             icon={<CheckCircle />}
             title="Checklist"
             onClick={() => alert("TODO")}
+            flat
+          />{" "}
+          <Button
+            icon={<Trash />}
+            onClick={onDelete}
             flat
           />
         </div>

@@ -11,5 +11,5 @@ export default function TodayView() {
     { today },
   );
 
-  return tasksDue.map((task) => <Task {...task} />);
+  return tasksDue.map((task) => <Task key={task.id} {...task} />);
 }
