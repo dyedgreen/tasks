@@ -4,6 +4,7 @@ import { useEffect } from "preact/hooks";
 import { Context } from "@hooks/useSqlite.js";
 import Sidebar from "@app/components/sidebar/mod.jsx";
 import ViewHeader from "@app/components/view_header.jsx";
+import Ideas from "@app/views/ideas.jsx";
 import Today from "@app/views/today.jsx";
 import schema from "@app/schema.js";
 
@@ -17,6 +18,9 @@ function Navigation() {
 
   let viewBody;
   switch (activeView) {
+    case "ideas":
+      viewBody = <Ideas />;
+      break;
     case "today":
       viewBody = <Today />;
       break;

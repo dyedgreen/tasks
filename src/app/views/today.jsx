@@ -7,7 +7,8 @@ export default function TodayView() {
   const today = useToday();
   const tasksDue = useRows(
     `SELECT id, title, done FROM tasks
-     WHERE due NOT NULL AND due >= :today`,
+     WHERE due NOT NULL AND due <= :today
+     ORDER BY due ASC`,
     { today },
   );
 

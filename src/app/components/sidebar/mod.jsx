@@ -22,8 +22,13 @@ export default function Sidebar() {
   const today = useToday();
   const [{ dueTodayCount }] = useRows(
     `SELECT COUNT(*) as dueTodayCount FROM tasks
-     WHERE due NOT NULL AND due >= :today AND done IS NULL`,
+     WHERE due NOT NULL AND due <= :today AND done IS NULL`,
     { today },
+  );
+
+  const [{ ideasCount }] = useRows(
+    `SELECT COUNT(*) as ideasCount FROM tasks
+     WHERE due IS NULL AND done IS NULL`,
   );
 
   return (
@@ -39,6 +44,7 @@ export default function Sidebar() {
           onClick={() => setActiveView("ideas")}
           icon={<Beaker class="text-blue-500" />}
           title="Ideas"
+          badge={ideasCount > 0 ? ideasCount : null}
         />
         <div class="h-1" />
         <Item

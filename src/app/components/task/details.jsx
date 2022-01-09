@@ -37,23 +37,34 @@ export default function Open({ id, onClose }) {
     (description) => descriptionQuery({ id, description, now: new Date() }),
   );
 
-  const [dueInput, setDueInput] = useState(new Date(due));
-
   const deleteQuery = useQuery(`DELETE FROM tasks WHERE id = :id`);
   const onDelete = () => {
     if (confirm("Are you sure you want to delete this?")) deleteQuery({ id });
   };
 
+  const dueQuery = useQuery(
+    `UPDATE tasks SET due = :due, updated = :now WHERE id = :id`,
+  );
+  const [dueInput, setDueInput] = useState(due != null ? new Date(due) : null);
+  const updateDueDateAndClose = () => {
+    if (dueInput?.valueOf() !== (new Date(due)).valueOf()) {
+      dueQuery({ id, due: dueInput, now: new Date() });
+    }
+    onClose();
+  };
+
   const ref = useRef();
   useEffect(() => {
     const onEvent = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) onClose();
+      if (ref.current && !ref.current.contains(event.target)) {
+        updateDueDateAndClose();
+      }
     };
     document.addEventListener("mousedown", onEvent);
     return () => {
       document.removeEventListener("mousedown", onEvent);
     };
-  }, [ref, onClose]);
+  }, [ref, updateDueDateAndClose]);
 
   return (
     <div
@@ -72,7 +83,7 @@ export default function Open({ id, onClose }) {
           onInput={(e) => setTitleInput(e.target.value)}
           placeholder="Untitled To-Do"
         />
-        <Button title="Done" onClick={onClose} />
+        <Button title="Done" onClick={updateDueDateAndClose} />
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
         <textarea
