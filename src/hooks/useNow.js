@@ -4,7 +4,7 @@ export function useNow(updateEvery = 1000) {
   const [now, setNow] = useState(new Date());
   useEffect(
     () => {
-      const id = setTimeout(() => setNow(Date.now()), updateEvery);
+      const id = setTimeout(() => setNow(new Date()), updateEvery);
       return () => clearTimeout(id);
     },
     [setNow],
