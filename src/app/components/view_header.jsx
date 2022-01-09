@@ -1,10 +1,13 @@
 import { h } from "preact";
+import { useQuery } from "@hooks/useSqlite.js";
 import {
   Archive,
   Beaker,
   Calendar,
   Lightning,
+  Plus,
 } from "@app/components/icons.jsx";
+import Button from "@app/components/button.jsx";
 
 export default function ViewHeader({ activeView }) {
   let name;
@@ -29,10 +32,43 @@ export default function ViewHeader({ activeView }) {
     default:
       return null;
   }
+
+  const addTaskQuery = useQuery(
+    `INSERT INTO tasks (title, due, created, updated)
+     VALUES (:title, :due, :created, :updated)`,
+  );
+  const addEmptyTask = () => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let due;
+    switch (activeView) {
+      case "today":
+        due = today;
+        break;
+      case "planned":
+        // due tomorrow
+        due = new Date(today.valueOf() + 24 * 60 * 60 * 1000);
+        break;
+      default:
+        due = null;
+        break;
+    }
+    addTaskQuery({ title: "", due, created: now, updated: now });
+  };
+
   return (
-    <div class="flex w-full items-center space-x-4">
-      {icon}
-      <h1 class="text-xl font-semibold dark:text-white">{name}</h1>
+    <div class="flex w-full items-center justify-between">
+      <div class="flex space-x-4 items-center">
+        {icon}
+        <h1 class="text-xl font-semibold dark:text-white">{name}</h1>
+      </div>
+      {activeView != "completed" && (
+        <Button
+          icon={<Plus />}
+          title="New To-Do"
+          onClick={addEmptyTask}
+        />
+      )}
     </div>
   );
 }

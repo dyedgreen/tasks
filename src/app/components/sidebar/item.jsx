@@ -1,6 +1,6 @@
 import { h } from "preact";
 
-export default function Item({ onClick, icon, title, selected }) {
+export default function Item({ onClick, icon, title, selected, badge }) {
   return (
     <button
       class={`
@@ -12,7 +12,10 @@ export default function Item({ onClick, icon, title, selected }) {
       onClick={onClick}
     >
       {icon}
-      <span class="block h-full leading-none">{title}</span>
+      <div>{title}</div>
+      {badge != null && (
+        <div class="grow text-slate-500 text-right">{badge}</div>
+      )}
     </button>
   );
 }

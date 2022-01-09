@@ -1,6 +1,6 @@
-import { createContext, h } from "preact";
-import { useContext, useEffect, useState } from "preact/hooks";
-import { open } from "@lib/sqlite.js";
+import { createContext, h } from "../_snowpack/pkg/preact.js";
+import { useContext, useEffect, useState } from "../_snowpack/pkg/preact/hooks.js";
+import { open } from "../lib/sqlite.js";
 
 const Database = createContext(null);
 const TotalChanges = createContext(null);
@@ -45,7 +45,7 @@ export function useRows(query, params) {
 
   useEffect(() => {
     setStmt(stmt);
-    return () => stmt.finalize();
+    return stmt.finalize;
   }, []);
 
   const [cache, setCache] = useState({ rows: null, params, totalChanges: NaN });
@@ -74,7 +74,7 @@ export function useQuery(query) {
 
   useEffect(() => {
     setStmt(stmt);
-    return () => stmt.finalize();
+    return stmt.finalize;
   }, []);
 
   return (params) => {

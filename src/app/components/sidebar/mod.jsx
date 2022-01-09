@@ -9,6 +9,8 @@ import {
   Moon,
   Sun,
 } from "@app/components/icons.jsx";
+import { useToday } from "@hooks/useNow.js";
+import { useRows } from "@hooks/useSqlite.js";
 import { useActiveView, useDarkMode } from "@hooks/useSettings.js";
 
 export default function Sidebar() {
@@ -16,6 +18,13 @@ export default function Sidebar() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const [activeView, setActiveView] = useActiveView();
+
+  const today = useToday();
+  const [{ dueTodayCount }] = useRows(
+    `SELECT COUNT(*) as dueTodayCount FROM tasks
+     WHERE due NOT NULL AND due >= :today AND done IS NULL`,
+    { today },
+  );
 
   return (
     <navigation class="
@@ -37,6 +46,7 @@ export default function Sidebar() {
           onClick={() => setActiveView("today")}
           icon={<Lightning class="text-yellow-500" />}
           title="Today"
+          badge={dueTodayCount > 0 ? dueTodayCount : null}
         />
         <Item
           selected={activeView === "planned"}

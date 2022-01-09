@@ -1,13 +1,15 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
+import { useQuery, useRows } from "@hooks/useSqlite.js";
 import Button from "@app/components/button.jsx";
 import { CheckCircle } from "@app/components/icons.jsx";
 import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
-function Closed({ id, title, _done, onOpen }) {
-  // FIXME: use task itself ...
-  const [done, setDone] = useState(false);
+function Closed({ id, title, done, onOpen }) {
+  const doneQuery = useQuery(`UPDATE tasks SET done = :done WHERE id = :id`);
+  const setDone = (isDone) =>
+    doneQuery({ done: isDone ? new Date() : null, id });
 
   return (
     <div class="flex flex-row items-center w-full">
@@ -37,7 +39,7 @@ function Open({ id, onClose }) {
 
   return (
     <div class="
-      flex flex-col w-full
+      flex flex-col w-full box-content
       p-2 -mx-2 shadow-lg rounded-md
       dark:text-white dark:bg-slate-900 bg-slate-50
     ">

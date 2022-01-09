@@ -1,4 +1,4 @@
-import { useNow } from "./useNow.js";
+import { useEffect, useState } from "../_snowpack/pkg/preact/hooks.js";
 
 const DAYS = [
   "Sunday",
@@ -30,7 +30,14 @@ const DAY = 24 * HOUR;
 
 /** Returns a formatted relative date. */
 export default function useDate(date) {
-  const now = useNow(MIN);
+  const [now, setNow] = useState(new Date());
+  useEffect(
+    () => {
+      const id = setTimeout(() => setNow(Date.now()), MIN);
+      return () => clearTimeout(id);
+    },
+    [setNow],
+  );
   const dist = date.valueOf() - now.valueOf();
 
   if (Math.abs(dist) < DAY && now.getDate() === date.getDate()) {

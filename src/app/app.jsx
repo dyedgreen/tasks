@@ -1,12 +1,11 @@
 import { h } from "preact";
+import { useActiveView, useDarkMode } from "@hooks/useSettings.js";
 import { useEffect } from "preact/hooks";
 import { Context } from "@hooks/useSqlite.js";
-import { useActiveView, useDarkMode } from "@hooks/useSettings.js";
-import schema from "@app/schema.js";
 import Sidebar from "@app/components/sidebar/mod.jsx";
 import ViewHeader from "@app/components/view_header.jsx";
-
-import Task from "@app/components/task/mod.jsx";
+import Today from "@app/views/today.jsx";
+import schema from "@app/schema.js";
 
 function Navigation() {
   const [darkMode] = useDarkMode();
@@ -16,13 +15,22 @@ function Navigation() {
 
   const [activeView] = useActiveView();
 
+  let viewBody;
+  switch (activeView) {
+    case "today":
+      viewBody = <Today />;
+      break;
+    default:
+      viewBody = null;
+      break;
+  }
+
   return (
     <div class="flex w-full h-screen">
       <Sidebar />
       <div class="p-8 w-full space-y-4">
         <ViewHeader activeView={activeView} />
-        <Task id={0} title="Tell babe to go to Maven" />
-        <Task id={1} title="" />
+        {viewBody}
       </div>
     </div>
   );
