@@ -18,13 +18,14 @@ export default function Planned() {
   if (plannedTasks.length) {
     let lastDate = null;
     return plannedTasks.map((task) => {
-      if (lastDate == null || new Date(task.due).valueOf() > lastDate) {
+      const due = new Date(task.due);
+      if (lastDate == null || due.getDate() !== lastDate.getDate()) {
         const isFirst = lastDate == null;
-        lastDate = new Date(task.due).valueOf();
+        lastDate = due;
         return (
           <>
             {!isFirst && <div class="w-full h-2" />}
-            <DateHeader date={new Date(task.due)} />
+            <DateHeader date={due} />
             <Task key={task.id} {...task} />
           </>
         );

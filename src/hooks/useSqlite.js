@@ -1,6 +1,6 @@
 import { createContext, h } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
-import { init, open } from "@lib/sqlite.js";
+import { open, read, write } from "@lib/sqlite.js";
 
 const Database = createContext(null);
 const TotalChanges = createContext(null);
@@ -15,7 +15,7 @@ export function Context({
   const changes = useState(0);
 
   useEffect(() => {
-    const promise = init().then(() => open(database));
+    const promise = open(database);
     promise.then((handle) => {
       for (const query of schema) handle.query(query);
       setHandle(handle);
@@ -29,14 +29,18 @@ export function Context({
       { value: changes },
       children,
     );
-    return h(Database.Provider, { value: handle }, withTotalChanges);
+    return h(
+      Database.Provider,
+      { value: { handle, database } },
+      withTotalChanges,
+    );
   } else {
     return placeholder;
   }
 }
 
 export function useRows(query, params) {
-  const db = useContext(Database);
+  const { handle: db } = useContext(Database);
   const [totalChanges, _] = useContext(TotalChanges);
   if (db == null) throw new Error("Database handle not initialized.");
 
@@ -65,7 +69,7 @@ export function useRows(query, params) {
 }
 
 export function useQuery(query) {
-  const db = useContext(Database);
+  const { handle: db } = useContext(Database);
   const [totalChanges, setTotalChanges] = useContext(TotalChanges);
   if (db == null) throw new Error("Database handle not initialized.");
 
@@ -81,5 +85,16 @@ export function useQuery(query) {
     const rows = stmt.allEntries(params);
     if (db.totalChanges !== totalChanges) setTotalChanges(db.totalChanges);
     return rows;
+  };
+}
+
+export function useDownload(filename) {
+  const { database } = useContext(Database);
+  return async () => {
+    const fileContents = await read(database);
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([fileContents]));
+    link.download = filename ?? database;
+    link.click();
   };
 }

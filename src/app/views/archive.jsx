@@ -16,16 +16,14 @@ export default function Archive() {
   if (plannedTasks.length) {
     let lastDate = null;
     return plannedTasks.map((task) => {
-      if (
-        lastDate == null ||
-        new Date(task.archived).valueOf() > lastDate + 24 * 60 * 60 * 1000
-      ) {
+      const archived = new Date(task.archived);
+      if (lastDate == null || archived.getDate() !== lastDate.getDate()) {
         const isFirst = lastDate == null;
-        lastDate = new Date(task.archived).valueOf();
+        lastDate = archived;
         return (
           <>
             {!isFirst && <div class="w-full h-2" />}
-            <DateHeader date={new Date(task.archived)} />
+            <DateHeader date={archived} />
             <Task key={task.id} {...task} />
           </>
         );

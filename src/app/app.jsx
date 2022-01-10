@@ -38,7 +38,7 @@ function Navigation() {
   }
 
   return (
-    <div class="flex w-full h-screen">
+    <div class="flex w-full h-full">
       <Sidebar />
       <div class="p-8 w-full space-y-4 overflow-y-auto">
         <ViewHeader activeView={activeView} />

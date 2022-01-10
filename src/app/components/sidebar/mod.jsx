@@ -10,7 +10,7 @@ import {
   Sun,
 } from "@app/components/icons.jsx";
 import { useToday } from "@hooks/useNow.js";
-import { useRows } from "@hooks/useSqlite.js";
+import { useDownload, useRows } from "@hooks/useSqlite.js";
 import { useActiveView, useDarkMode } from "@hooks/useSettings.js";
 
 export default function Sidebar() {
@@ -29,6 +29,13 @@ export default function Sidebar() {
   const [{ ideasCount }] = useRows(
     `SELECT COUNT(*) as ideasCount FROM tasks
      WHERE due IS NULL AND done IS NULL AND archived IS NULL`,
+  );
+
+  const pad = (str) => str.toString().length > 1 ? str : `0${str}`;
+  const downloadBackup = useDownload(
+    `tasks-backup-${today.getFullYear()}-${pad(today.getMonth() + 1)}-${
+      pad(today.getDate())
+    }.sqlite`,
   );
 
   return (
@@ -77,7 +84,7 @@ export default function Sidebar() {
           title={darkMode ? "Light Mode" : "Dark Mode"}
         />
         <Item
-          onClick={() => alert("TODO")}
+          onClick={downloadBackup}
           icon={<DocumentDownload />}
           title="Backup"
         />

@@ -223,6 +223,8 @@ async function loadFile(fileName) {
         const buffer = new Buffer(file.data);
         LOADED_FILES.set(fileName, buffer);
         return buffer;
+    } else if (LOADED_FILES.has(fileName)) {
+        return LOADED_FILES.get(fileName);
     } else {
         return null;
     }
@@ -343,20 +345,33 @@ function decode(base64) {
     }
     return bytes;
 }
-let sqliteWasmModule = null;
+const moduleOrInstance = {
+    module: null,
+    instances: []
+};
 async function compile() {
-    if (sqliteWasmModule == null) {
-        sqliteWasmModule = await WebAssembly.compile(decode(wasm));
-    }
+    moduleOrInstance.module = await WebAssembly.compile(decode(wasm));
 }
-function instantiate() {
+async function instantiateBrowser() {
     const placeholder = {
         exports: null
     };
-    const instance = new WebAssembly.Instance(sqliteWasmModule, env(placeholder));
+    const instance = await WebAssembly.instantiate(moduleOrInstance.module, env(placeholder));
     placeholder.exports = instance.exports;
-    instance.exports.seed_rng(Date.now());
-    return instance;
+    moduleOrInstance.instances.push(instance);
+}
+function instantiate() {
+    if (moduleOrInstance.instances.length) {
+        return moduleOrInstance.instances.pop();
+    } else {
+        const placeholder = {
+            exports: null
+        };
+        const instance = new WebAssembly.Instance(moduleOrInstance.module, env(placeholder));
+        placeholder.exports = instance.exports;
+        instance.exports.seed_rng(Date.now());
+        return instance;
+    }
 }
 class PreparedQuery {
     _wasm;
@@ -733,11 +748,11 @@ class DB {
 }
 export { SqliteError1 as SqliteError };
 export { Status1 as Status };
-async function init1() {
-    await compile();
-}
+const hasCompiled = compile();
 async function open1(file) {
     if (file != null && file !== ":memory:") await loadFile(file);
+    await hasCompiled;
+    await instantiateBrowser();
     return new DB(file);
 }
 async function write1(file, data) {
@@ -747,7 +762,6 @@ async function read1(file) {
     const buffer = await loadFile(file);
     return buffer?.toUint8Array()?.slice();
 }
-export { init1 as init };
 export { open1 as open };
 export { write1 as write };
 export { read1 as read };
