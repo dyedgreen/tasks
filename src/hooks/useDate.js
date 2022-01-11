@@ -30,14 +30,14 @@ const DAY = 24 * HOUR;
 
 /** Returns a formatted relative date. */
 export default function useDate(date) {
-  const now = useToday(MIN);
-  const dist = date.valueOf() - now.valueOf();
+  const today = useToday(MIN);
+  const dist = date.valueOf() - today.valueOf();
 
-  if (Math.abs(dist) < DAY && now.getDate() === date.getDate()) {
+  if (Math.abs(dist) < DAY && today.getDate() === date.getDate()) {
     return "Today";
   } else if (dist > 0 && dist < 2 * DAY) {
     return "Tomorrow";
-  } else if (dist < 0 && Math.abs(dist) < 2 * DAY) {
+  } else if (dist < 0 && Math.abs(dist) < DAY) {
     return "Yesterday";
   } else if (Math.abs(dist) < 7 * DAY) {
     if (dist > 0) {

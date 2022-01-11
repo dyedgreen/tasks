@@ -63,7 +63,7 @@ export default function ViewHeader({ activeView }) {
   const archiveCompletedTasks = () => archiveQuery({ now: new Date() });
 
   return (
-    <div class="flex w-full items-center justify-between">
+    <div class="flex flex-col sm:flex-row w-full items-center justify-between">
       <div class="flex space-x-4 items-center">
         {icon}
         <h1 class="text-xl font-semibold dark:text-white">{name}</h1>

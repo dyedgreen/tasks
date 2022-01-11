@@ -257,7 +257,7 @@ async function deleteFile(fileName) {
 async function writeFile(fileName, data) {
     await syncFile(fileName, data);
     if (LOADED_FILES.has(fileName)) {
-        const buffer = LOADED_FILES.get(fileName).buffer;
+        const buffer = LOADED_FILES.get(fileName);
         buffer.truncate(0);
         buffer.write(0, data);
     }

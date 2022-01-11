@@ -98,3 +98,19 @@ export function useDownload(filename) {
     link.click();
   };
 }
+
+export function useImportFile() {
+  const { database } = useContext(Database);
+  return () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".sqlite";
+    input.addEventListener("change", async function () {
+      const buffer = await input.files[0].arrayBuffer();
+      await write(database, new Uint8Array(buffer));
+      location.reload(); // maybe find a nicer way to close + reopen
+    });
+    document.querySelector("html").appendChild(input);
+    input.click();
+  };
+}

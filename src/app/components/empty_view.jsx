@@ -8,7 +8,7 @@ export default function EmptyView({ icon }) {
       dark:text-slate-600 text-slate-400
       ">
       <Icon class="w-12 h-12" />
-      <h2 class="mt-4 text-sm">There are no To-Do's to show</h2>
+      <h2 class="mt-4 text-sm text-center">There are no To-Do's to show</h2>
     </div>
   );
 }

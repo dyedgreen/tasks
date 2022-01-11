@@ -4,7 +4,8 @@ export default function Item({ onClick, icon, title, selected, badge }) {
   return (
     <button
       class={`
-        flex justify-start items-center space-x-2 w-full px-2 py-1
+        flex justify-center sm:justify-start items-center
+        space-x-1 sm:space-x-2 w-full px-2 py-1
         text-sm font-bold rounded
         dark:hover:bg-slate-700 hover:bg-slate-300
         ${selected && "dark:bg-slate-700 bg-slate-300"}
@@ -12,9 +13,11 @@ export default function Item({ onClick, icon, title, selected, badge }) {
       onClick={onClick}
     >
       {icon}
-      <div>{title}</div>
+      <div class="hidden sm:block">{title}</div>
       {badge != null && (
-        <div class="grow text-slate-500 text-right">{badge}</div>
+        <div class="sm:grow text-slate-500 text-right">
+          {badge}
+        </div>
       )}
     </button>
   );

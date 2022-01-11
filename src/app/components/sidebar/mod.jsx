@@ -7,10 +7,11 @@ import {
   DocumentDownload,
   Lightning,
   Moon,
+  Refresh,
   Sun,
 } from "@app/components/icons.jsx";
 import { useToday } from "@hooks/useNow.js";
-import { useDownload, useRows } from "@hooks/useSqlite.js";
+import { useDownload, useImportFile, useRows } from "@hooks/useSqlite.js";
 import { useActiveView, useDarkMode } from "@hooks/useSettings.js";
 
 export default function Sidebar() {
@@ -38,17 +39,19 @@ export default function Sidebar() {
     }.sqlite`,
   );
 
+  const restoreBackup = useImportFile();
+
   return (
     <navigation
       id="sidebar"
       class="
-      w-40 h-full
+      h-full
       flex flex-col shrink-0 justify-between p-2
       dark:bg-slate-900 bg-gray-200 dark:text-white
     "
     >
       <div class="space-y-1">
-        <h1 class="text-xl font-semibold mt-2 mb-3 px-2">Tasks</h1>
+        <h1 class="sm:text-xl font-semibold mt-2 mb-3 px-2">Tasks</h1>
         <Item
           selected={activeView === "ideas"}
           onClick={() => setActiveView("ideas")}
@@ -79,14 +82,19 @@ export default function Sidebar() {
       </div>
       <div class="space-y-1">
         <Item
-          onClick={toggleDarkMode}
-          icon={darkMode ? <Sun /> : <Moon />}
-          title={darkMode ? "Light Mode" : "Dark Mode"}
-        />
-        <Item
           onClick={downloadBackup}
           icon={<DocumentDownload />}
           title="Backup"
+        />
+        <Item
+          onClick={restoreBackup}
+          icon={<Refresh />}
+          title="Restore"
+        />
+        <Item
+          onClick={toggleDarkMode}
+          icon={darkMode ? <Sun /> : <Moon />}
+          title={darkMode ? "Lights On" : "Lights Off"}
         />
       </div>
     </navigation>
