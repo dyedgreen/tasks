@@ -4,6 +4,7 @@ import { useQuery, useRows } from "@hooks/useSqlite.js";
 import useDebounced from "@hooks/useDebounced.js";
 import Button from "@app/components/button.jsx";
 import { Archive, CheckCircle, Trash } from "@app/components/icons.jsx";
+import TextInput from "@app/components/text_input.jsx";
 import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
@@ -106,10 +107,10 @@ export default function Open({ id, onClose }) {
     >
       <div class="flex flex-row items-center w-full">
         <SquareCheck checked={done} onChange={setDone} />
-        <input
+        <TextInput
           class="text-base font-medium mx-4 w-full bg-inherit"
           value={titleInput}
-          onInput={(e) => setTitleInput(e.target.value)}
+          onChange={setTitleInput}
           placeholder="Untitled To-Do"
         />
         <Button title="Done" onClick={updateDueDateAndClose} />

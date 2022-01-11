@@ -45,7 +45,7 @@ export default function Sidebar() {
     <navigation
       id="sidebar"
       class="
-      h-full
+      h-full sm:w-40
       flex flex-col shrink-0 justify-between p-2
       dark:bg-slate-900 bg-gray-200 dark:text-white
     "
