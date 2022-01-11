@@ -5,6 +5,7 @@ import useDebounced from "@hooks/useDebounced.js";
 import Button from "@app/components/button.jsx";
 import { Archive, CheckCircle, Trash } from "@app/components/icons.jsx";
 import TextInput from "@app/components/text_input.jsx";
+import TextArea from "./text_area.jsx";
 import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
 
@@ -37,23 +38,6 @@ export default function Open({ id, onClose }) {
     description ?? "",
     (description) => descriptionQuery({ id, description, now: new Date() }),
   );
-
-  const descriptionRef = useRef();
-  useEffect(() => {
-    if (descriptionRef.current) {
-      descriptionRef.current.style.height = "auto";
-      descriptionRef.current.style.height =
-        descriptionRef.current.scrollHeight + "px";
-    }
-    const listener = (event) => {
-      if (descriptionRef.current === event.target) {
-        event.target.style.height = "auto";
-        event.target.style.height = event.target.scrollHeight + "px";
-      }
-    };
-    document.addEventListener("input", listener);
-    return () => document.removeEventListener("input", listener);
-  }, [descriptionRef]);
 
   const archiveQuery = useQuery(
     `UPDATE tasks SET archived = :archived, updated = :now WHERE id = :id`,
@@ -116,12 +100,11 @@ export default function Open({ id, onClose }) {
         <Button title="Done" onClick={updateDueDateAndClose} />
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
-        <textarea
-          ref={descriptionRef}
+        <TextArea
           class="h-auto resize-none bg-inherit text-xs font-mono"
           placeholder="Add notes"
           value={descriptionInput}
-          onInput={(e) => setDescriptionInput(e.target.value)}
+          onChange={setDescriptionInput}
         />
         <div class="flex justify-start space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />

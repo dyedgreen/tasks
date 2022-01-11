@@ -16,7 +16,10 @@ function Closed({ id, title, done, onOpen }) {
   return (
     <div class="flex flex-row items-center w-full">
       <SquareCheck checked={done} onChange={setDone} />
-      <button class="text-sm font-medium pl-4 dark:text-white" onClick={onOpen}>
+      <button
+        class="text-sm text-left font-medium pl-4 dark:text-white"
+        onClick={onOpen}
+      >
         {title != null && title.length > 0
           ? title
           : (

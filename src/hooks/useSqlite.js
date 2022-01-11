@@ -103,6 +103,7 @@ export function useImportFile() {
   const { database } = useContext(Database);
   return () => {
     const input = document.createElement("input");
+    input.style = "display: none";
     input.type = "file";
     input.accept = ".sqlite";
     input.addEventListener("change", async function () {
