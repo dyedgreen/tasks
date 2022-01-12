@@ -8,10 +8,15 @@ import TextInput from "@app/components/text_input.jsx";
 import TextArea from "./text_area.jsx";
 import DateInput from "./date_input.jsx";
 import SquareCheck from "./square_check.jsx";
+import ChecklistItem from "./checklist_item.jsx";
 
 export default function Open({ id, onClose }) {
   const [{ title, description, done, due, archived }] = useRows(
     "SELECT * FROM tasks WHERE id = :id",
+    { id },
+  );
+  const checklistItems = useRows(
+    "SELECT id, title, done FROM checklist WHERE task = :id ORDER BY id ASC",
     { id },
   );
 
@@ -39,6 +44,13 @@ export default function Open({ id, onClose }) {
     (description) => descriptionQuery({ id, description, now: new Date() }),
   );
 
+  const checklistQuery = useQuery(
+    "INSERT INTO checklist (task, title, done) VALUES (:id, '', FALSE)",
+  );
+  const onAddChecklist = () => {
+    checklistQuery({ id });
+  };
+
   const archiveQuery = useQuery(
     `UPDATE tasks SET archived = :archived, updated = :now WHERE id = :id`,
   );
@@ -49,7 +61,10 @@ export default function Open({ id, onClose }) {
 
   const deleteQuery = useQuery(`DELETE FROM tasks WHERE id = :id`);
   const onDelete = () => {
-    const isEmptyTask = !title?.length && !description?.length && !done;
+    const isEmptyTask = !title?.length &&
+      !description?.length &&
+      !done &&
+      checklistItems.length === 0;
     if (isEmptyTask || confirm("Are you sure you want to delete this?")) {
       deleteQuery({ id });
     }
@@ -106,8 +121,20 @@ export default function Open({ id, onClose }) {
           value={descriptionInput}
           onChange={setDescriptionInput}
         />
+        {checklistItems.map((item) => (
+          <ChecklistItem
+            key={item.id}
+            {...item}
+          />
+        ))}
         <div class="flex justify-start space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />
+          <Button
+            icon={<CheckCircle />}
+            title="Checklist"
+            onClick={onAddChecklist}
+            flat
+          />
           <Button
             icon={<Archive />}
             title={archived ? "Un-Archive" : "Archive"}
