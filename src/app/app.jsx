@@ -50,7 +50,7 @@ function Navigation() {
 
 export default function App() {
   return (
-    <Context database="test.sqlite" schema={schema}>
+    <Context database="tasks.sqlite" schema={schema}>
       <Navigation />
     </Context>
   );
