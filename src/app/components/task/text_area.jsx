@@ -1,9 +1,9 @@
 import { h } from "preact";
-import { useEffect, useRef } from "preact/hooks";
+import { useLayoutEffect, useRef } from "preact/hooks";
 
 export default function TextBox({ value, onChange, ...props }) {
   const ref = useRef();
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ref.current) {
       ref.current.style.height = "auto";
       ref.current.style.height = ref.current.scrollHeight + "px";
