@@ -37,7 +37,7 @@ export default function useDate(date) {
     return "Today";
   } else if (dist > 0 && dist < 2 * DAY) {
     return "Tomorrow";
-  } else if (dist < 0 && Math.abs(dist) < DAY) {
+  } else if (dist < 0 && Math.abs(dist) <= DAY) {
     return "Yesterday";
   } else if (Math.abs(dist) < 7 * DAY) {
     if (dist > 0) {
