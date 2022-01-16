@@ -74,8 +74,9 @@ export default function Open({ id, onClose }) {
     `UPDATE tasks SET due = :due, updated = :now WHERE id = :id`,
   );
   const [dueInput, setDueInput] = useState(due != null ? new Date(due) : null);
-  const updateDueDateAndClose = () => {
-    if (dueInput?.valueOf() !== (new Date(due)).valueOf()) {
+  const dueDateChanged = dueInput?.valueOf() !== (new Date(due)).valueOf();
+  const closeAndSaveDueDate = () => {
+    if (dueDateChanged) {
       dueQuery({ id, due: dueInput, now: new Date() });
     }
     onClose();
@@ -86,14 +87,14 @@ export default function Open({ id, onClose }) {
     const onEvent = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         const sideBar = document.getElementById("sidebar");
-        if (!sideBar.contains(event.target)) updateDueDateAndClose();
+        if (!sideBar.contains(event.target)) closeAndSaveDueDate();
       }
     };
     document.addEventListener("mousedown", onEvent);
     return () => {
       document.removeEventListener("mousedown", onEvent);
     };
-  }, [ref, updateDueDateAndClose]);
+  }, [ref, closeAndSaveDueDate]);
 
   return (
     <div
@@ -112,7 +113,10 @@ export default function Open({ id, onClose }) {
           onChange={setTitleInput}
           placeholder="Untitled To-Do"
         />
-        <Button title="Done" onClick={updateDueDateAndClose} />
+        <Button
+          title={dueDateChanged ? "Save" : "Done"}
+          onClick={closeAndSaveDueDate}
+        />
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
         <TextArea
