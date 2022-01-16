@@ -125,9 +125,11 @@ export default function Open({ id, onClose }) {
           value={descriptionInput}
           onChange={setDescriptionInput}
         />
-        {checklistItems.map((item) => (
+        {checklistItems.map((item, idx) => (
           <ChecklistItem
             key={item.id}
+            isLastItem={idx + 1 === checklistItems.length}
+            onAddChecklist={onAddChecklist}
             {...item}
           />
         ))}
