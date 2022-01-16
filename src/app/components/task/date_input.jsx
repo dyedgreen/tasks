@@ -31,6 +31,7 @@ export default function DateInput({ value, onChange }) {
         <input
           class="bg-inherit"
           type="date"
+          onInput={(e) => onChange(toDate(e.target.value))}
           onBlur={(e) => {
             onChange(toDate(e.target.value));
             setShowInput(false);
