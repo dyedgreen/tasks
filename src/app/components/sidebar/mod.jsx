@@ -84,10 +84,10 @@ export default function Sidebar() {
         {
           /*        <div class="h-1" />
         <Item
-          selected={activeView === "archive"}
-          onClick={() => setActiveView("archive")}
+          selected={activeView === "space:1"}
+          onClick={() => setActiveView("space:1")}
           icon={<Cube class="text-slate-500" />}
-          title="Untitled Space"
+          title="Untitled"
         />
         <Item
           selected={activeView === "archive"}
