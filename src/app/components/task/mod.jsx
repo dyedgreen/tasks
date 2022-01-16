@@ -24,7 +24,7 @@ function Closed({ id, title, done, onOpen }) {
           ? title
           : (
             <span class="dark:text-gray-600 text-gray-400">
-              (Untitled To-Do)
+              Untitled To-Do
             </span>
           )}
       </button>

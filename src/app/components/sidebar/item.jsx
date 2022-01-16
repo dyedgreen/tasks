@@ -13,7 +13,7 @@ export default function Item({ onClick, icon, title, selected, badge }) {
       onClick={onClick}
     >
       {icon}
-      <div class="hidden sm:block">{title}</div>
+      <div class="hidden sm:block text-left leading-tight">{title}</div>
       {badge != null && (
         <div class="sm:grow text-slate-500 text-right">
           {badge}

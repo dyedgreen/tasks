@@ -1,6 +1,6 @@
-import { createContext, h } from "preact";
+import { Component, createContext, h } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
-import { open, read, write } from "@lib/sqlite.js";
+import { open, read, SqliteError, write } from "@lib/sqlite.js";
 
 const Database = createContext(null);
 const TotalChanges = createContext(null);
@@ -37,6 +37,9 @@ export function Context({
   } else {
     return placeholder;
   }
+}
+
+export class SqliteErrorBoundary extends Component {
 }
 
 export function useRows(query, params) {

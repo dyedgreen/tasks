@@ -4,9 +4,11 @@ import {
   Archive,
   Beaker,
   Calendar,
+  Cube,
   DocumentDownload,
   Lightning,
   Moon,
+  Plus,
   Refresh,
   Sun,
 } from "@app/components/icons.jsx";
@@ -79,6 +81,21 @@ export default function Sidebar() {
           icon={<Archive class="text-green-500" />}
           title="Archive"
         />
+        {
+          /*        <div class="h-1" />
+        <Item
+          selected={activeView === "archive"}
+          onClick={() => setActiveView("archive")}
+          icon={<Cube class="text-slate-500" />}
+          title="Untitled Space"
+        />
+        <Item
+          selected={activeView === "archive"}
+          onClick={() => setActiveView("archive")}
+          icon={<Plus class="text-slate-500" />}
+          title="Add Space"
+        />*/
+        }
       </div>
       <div class="space-y-1">
         <Item
