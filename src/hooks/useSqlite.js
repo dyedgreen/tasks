@@ -12,16 +12,21 @@ export function Context({
   children,
 }) {
   const [handle, setHandle] = useState(null);
+  const [error, setError] = useState(null);
   const changes = useState(0);
 
   useEffect(() => {
     const promise = open(database);
-    promise.then((handle) => {
-      for (const query of schema) handle.query(query);
-      setHandle(handle);
-    });
+    promise
+      .then((handle) => {
+        for (const query of schema) handle.query(query);
+        setHandle(handle);
+      })
+      .catch((error) => setError(error));
     return () => promise.then((handle) => handle.close(true));
   }, []);
+
+  if (error != null) throw error;
 
   if (handle != null) {
     const withTotalChanges = h(
@@ -40,6 +45,26 @@ export function Context({
 }
 
 export class SqliteErrorBoundary extends Component {
+  constructor() {
+    super();
+    this.state = { error: null };
+  }
+
+  componentDidCatch(error) {
+    if (error instanceof SqliteError) {
+      this.setState({ error });
+    } else {
+      throw error;
+    }
+  }
+
+  render({ children, fallback }, { error }) {
+    if (error) {
+      return h(fallback, { error }, null);
+    } else {
+      return children;
+    }
+  }
 }
 
 export function useRows(query, params) {
@@ -112,7 +137,7 @@ export function useImportFile() {
     input.addEventListener("change", async function () {
       const buffer = await input.files[0].arrayBuffer();
       await write(database, new Uint8Array(buffer));
-      location.reload(); // maybe find a nicer way to close + reopen
+      document.querySelector("html").removeChild(input);
     });
     document.querySelector("html").appendChild(input);
     input.click();

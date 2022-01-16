@@ -1,13 +1,14 @@
 import { h } from "preact";
 import { useActiveView, useDarkMode } from "@hooks/useSettings.js";
 import { useEffect } from "preact/hooks";
-import { Context } from "@hooks/useSqlite.js";
+import { Context, SqliteErrorBoundary } from "@hooks/useSqlite.js";
 import Sidebar from "@app/components/sidebar/mod.jsx";
 import ViewHeader from "@app/components/view_header.jsx";
 import Ideas from "@app/views/ideas.jsx";
 import Today from "@app/views/today.jsx";
 import Planned from "@app/views/planned.jsx";
 import Archive from "@app/views/archive.jsx";
+import Error from "@app/views/error.jsx";
 import schema from "@app/schema.js";
 
 function Navigation() {
@@ -50,8 +51,10 @@ function Navigation() {
 
 export default function App() {
   return (
-    <Context database="tasks.sqlite" schema={schema}>
-      <Navigation />
-    </Context>
+    <SqliteErrorBoundary fallback={Error}>
+      <Context database="tasks.sqlite" schema={schema}>
+        <Navigation />
+      </Context>
+    </SqliteErrorBoundary>
   );
 }
