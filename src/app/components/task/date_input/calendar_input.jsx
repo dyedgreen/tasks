@@ -66,7 +66,7 @@ function Day({ label, onClick, skip = 0 }) {
     <button
       class={`
         h-8 w-10 text-sm text-center font-normal
-        hover:dark:bg-slate-300 hover:bg-slate-700
+        hover:dark:bg-slate-200 hover:bg-slate-800
         rounded-md ${skipClass(skip)}
       `}
       onClick={onClick}
@@ -89,11 +89,10 @@ export default function CalendarInput({ style, onInput }) {
   const offset = ((new Date(yearInput, monthInput, 1).getDay()) + 6) % 7;
 
   return (
-    <div class={style}>
-      <div class="
-        w-full flex mb-2 rounded overflow-hidden
-        text-sm dark:bg-slate-300 bg-slate-700
-      ">
+    <div
+      class={`rounded overflow-hidden p-2 dark:bg-slate-300 bg-slate-700 ${style}`}
+    >
+      <div class="w-full flex text-sm dark:bg-slate-300 bg-slate-700">
         <input
           class="w-1/2 bg-inherit text-inherit text-center font-semibold p-2"
           type="number"
@@ -107,7 +106,7 @@ export default function CalendarInput({ style, onInput }) {
               "-moz-appearance": "None",
               "appearance": "None",
             }}
-            class="bg-inherit text-inherit text-center font-semibold p-2"
+            class="bg-inherit text-inherit text-center font-semibold px-8"
             type="number"
             value={monthInput}
             onInput={(e) => setMonthInput(+e.target.value)}
