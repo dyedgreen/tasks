@@ -6,7 +6,7 @@ import Button from "@app/components/button.jsx";
 import { Archive, CheckCircle, Trash } from "@app/components/icons.jsx";
 import TextInput from "@app/components/text_input.jsx";
 import TextArea from "./text_area.jsx";
-import DateInput from "./date_input.jsx";
+import DateInput from "./date_input/mod.jsx";
 import SquareCheck from "./square_check.jsx";
 import ChecklistItem from "./checklist_item.jsx";
 

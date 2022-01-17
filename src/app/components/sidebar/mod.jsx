@@ -81,21 +81,6 @@ export default function Sidebar() {
           icon={<Archive class="text-green-500" />}
           title="Archive"
         />
-        {
-          /*        <div class="h-1" />
-        <Item
-          selected={activeView === "space:1"}
-          onClick={() => setActiveView("space:1")}
-          icon={<Cube class="text-slate-500" />}
-          title="Untitled"
-        />
-        <Item
-          selected={activeView === "archive"}
-          onClick={() => setActiveView("archive")}
-          icon={<Plus class="text-slate-500" />}
-          title="Add Space"
-        />*/
-        }
       </div>
       <div class="space-y-1">
         <Item
