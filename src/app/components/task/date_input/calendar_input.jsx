@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import { useToday } from "@hooks/useNow.js";
-import { Lightning } from "@app/components/icons.jsx";
+import { ArrowLeft, Lightning } from "@app/components/icons.jsx";
 
 const isLeapYear = (year) =>
   (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -61,13 +61,14 @@ function Label({ text }) {
   );
 }
 
-function Day({ label, onClick, skip = 0 }) {
+function Day({ label, onClick, skip = 0, subtle }) {
   return (
     <button
       class={`
-        h-8 w-10 text-sm text-center font-normal
+        flex h-8 w-10 text-sm text-center items-center justify-center
         hover:dark:bg-slate-200 hover:bg-slate-800
         rounded-md ${skipClass(skip)}
+        ${subtle ? "text-slate-500" : ""}
       `}
       onClick={onClick}
     >
@@ -87,6 +88,11 @@ export default function CalendarInput({ style, onInput }) {
   const days = [];
   for (let i = 1; i <= daysInMonth(yearInput, monthInput); i++) days.push(i);
   const offset = ((new Date(yearInput, monthInput, 1).getDay()) + 6) % 7;
+
+  const nextMonth = () => {
+    setMonthInput((monthInput + 1) % 12);
+    if (monthInput === 11) setYearInput(yearInput + 1);
+  };
 
   return (
     <div
@@ -147,9 +153,15 @@ export default function CalendarInput({ style, onInput }) {
                 label={day}
                 onClick={() => onInput(new Date(yearInput, monthInput, day))}
                 skip={day === 1 ? offset : ""}
+                subtle={(offset + day - 1) % 7 >= 5}
               />
             );
         })}
+        <Day
+          label={<ArrowLeft class="w-4 h-4" />}
+          onClick={nextMonth}
+          subtle
+        />
       </div>
     </div>
   );

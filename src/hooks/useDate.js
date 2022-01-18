@@ -28,9 +28,7 @@ const MIN = 60 * SEC;
 const HOUR = 60 * MIN;
 const DAY = 24 * HOUR;
 
-/** Returns a formatted relative date. */
-export default function useDate(date) {
-  const today = useToday(MIN);
+export function format(today, date) {
   const dist = date.valueOf() - today.valueOf();
 
   if (Math.abs(dist) < DAY && today.getDate() === date.getDate()) {
@@ -50,4 +48,10 @@ export default function useDate(date) {
       MONTHS[date.getMonth()]
     }. ${date.getFullYear()}`;
   }
+}
+
+/** Returns a formatted relative date. */
+export default function useDate(date) {
+  const today = useToday(MIN);
+  return format(today, date);
 }

@@ -2,13 +2,17 @@ import { Fragment, h } from "preact";
 import { useState } from "preact/hooks";
 import { useToday } from "@hooks/useNow.js";
 import useDate from "@hooks/useDate.js";
+import searchDate from "./search_date.js";
 import { Calendar, Clock, Lightning, Trash } from "@app/components/icons.jsx";
 import Button from "@app/components/button.jsx";
+import SearchDate from "./search_date.jsx";
 import CalendarInput from "./calendar_input.jsx";
 import Modal from "./modal.jsx";
 
 export default function DateInput({ value, onChange }) {
   const [showInput, setShowInput] = useState(false);
+  const [searchHasInput, setSearchHasInput] = useState(false);
+
   const today = useToday();
   const tomorrow = new Date(today.valueOf() + 24 * 60 * 60 * 1000);
 
@@ -24,31 +28,43 @@ export default function DateInput({ value, onChange }) {
   if (showInput) {
     modal = (
       <Modal
-        class="p-2 px-3 rounded shadow-lg dark:bg-slate-200 bg-slate-900 dark:text-slate-800 text-white"
+        class="
+          w-80 p-2 px-3
+          rounded shadow-lg
+          dark:bg-slate-200 bg-slate-900 dark:text-slate-800 text-white
+        "
         onClose={() => setShowInput(false)}
       >
-        <Button
-          icon={<Lightning class="text-yellow-500" />}
-          style="w-full text-inherit"
-          title="Today"
-          onClick={() => onChangeAndClose(today)}
-          flat
+        <SearchDate
+          onChange={onChangeAndClose}
+          setHasInput={setSearchHasInput}
         />
-        <Button
-          icon={<Calendar class="text-red-500" />}
-          style="w-full text-inherit"
-          title="Tomorrow"
-          onClick={() => onChangeAndClose(tomorrow)}
-          flat
-        />
-        <CalendarInput style="my-2" onInput={onChangeAndClose} />
-        <Button
-          icon={<Trash />}
-          title="Clear"
-          style="w-full"
-          onClick={() => onChangeAndClose(null)}
-          flat
-        />
+        {!searchHasInput && (
+          <>
+            <Button
+              icon={<Lightning class="text-yellow-500" />}
+              style="w-full text-inherit"
+              title="Today"
+              onClick={() => onChangeAndClose(today)}
+              flat
+            />
+            <Button
+              icon={<Calendar class="text-red-500" />}
+              style="w-full text-inherit"
+              title="Tomorrow"
+              onClick={() => onChangeAndClose(tomorrow)}
+              flat
+            />
+            <CalendarInput style="my-2" onInput={onChangeAndClose} />
+            <Button
+              icon={<Trash />}
+              title="Clear"
+              style="w-full"
+              onClick={() => onChangeAndClose(null)}
+              flat
+            />
+          </>
+        )}
       </Modal>
     );
   }
