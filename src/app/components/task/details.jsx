@@ -74,7 +74,8 @@ export default function Open({ id, onClose }) {
     `UPDATE tasks SET due = :due, updated = :now WHERE id = :id`,
   );
   const [dueInput, setDueInput] = useState(due != null ? new Date(due) : null);
-  const dueDateChanged = dueInput?.valueOf() !== (new Date(due)).valueOf();
+  const dueDateChanged =
+    dueInput?.valueOf() !== (due != null ? new Date(due) : null)?.valueOf();
   const closeAndSaveDueDate = () => {
     if (dueDateChanged) {
       dueQuery({ id, due: dueInput, now: new Date() });
