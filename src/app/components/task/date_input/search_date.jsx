@@ -5,6 +5,31 @@ import { format } from "@hooks/useDate.js";
 import { Calendar, Clock, Lightning } from "@app/components/icons.jsx";
 import TextInput from "@app/components/text_input.jsx";
 
+const MONTHS = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+];
+
+function maybeMonth(text) {
+  if (text.length > 0) {
+    for (let idx = 0; idx < MONTHS.length; idx++) {
+      if (MONTHS[idx].includes(text.toLowerCase())) return idx + 1;
+    }
+  } else {
+    return null;
+  }
+}
+
 /** Return a list of the closest matching future date. */
 export function fuzzySearch(query) {
   const now = new Date();
@@ -16,6 +41,24 @@ export function fuzzySearch(query) {
     .split(/\D+/)
     .map((str) => parseInt(str))
     .filter((num) => !isNaN(num));
+
+  const month = query
+    .split(/[^a-zA-Z]+/)
+    .map(maybeMonth)
+    .find((month) => month != null);
+  if (month != null && numbers.length === 1) {
+    numbers[1] = month;
+    if (numbers[0] > 31) {
+      numbers[2] = numbers[0];
+      numbers[0] = 1;
+    }
+  } else if (month != null && numbers.length >= 2) {
+    numbers[2] = numbers[1];
+    numbers[1] = month;
+  } else if (month != null && numbers.length === 0) {
+    numbers[0] = 1;
+    numbers[1] = month;
+  }
 
   if (numbers.length > 0 && numbers.length <= 3) {
     switch (numbers.length) {

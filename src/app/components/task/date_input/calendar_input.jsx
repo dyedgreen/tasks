@@ -145,13 +145,7 @@ export default function CalendarInput({ style, onInput }) {
             day === today.getDate();
           return (
             <Day
-              label={isToday
-                ? (
-                  <Lightning
-                    class={`w-4 h-4 ${day === 1 ? skipClass(offset) : ""}`}
-                  />
-                )
-                : day}
+              label={isToday ? <Lightning class="w-4 h-4" /> : day}
               onClick={() => onInput(new Date(yearInput, monthInput, day))}
               skip={day === 1 ? offset : ""}
               subtle={(offset + day - 1) % 7 >= 5}
