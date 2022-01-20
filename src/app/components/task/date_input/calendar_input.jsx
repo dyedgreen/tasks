@@ -141,21 +141,22 @@ export default function CalendarInput({ style, onInput }) {
         <Label text="Sat" />
         <Label text="Sun" />
         {days.map((day) => {
-          return yearInput === year && monthInput === month &&
-              day === today.getDate()
-            ? (
-              <Lightning
-                class={`w-4 h-4 ${day === 1 ? skipClass(offset) : ""}`}
-              />
-            )
-            : (
-              <Day
-                label={day}
-                onClick={() => onInput(new Date(yearInput, monthInput, day))}
-                skip={day === 1 ? offset : ""}
-                subtle={(offset + day - 1) % 7 >= 5}
-              />
-            );
+          const isToday = yearInput === year && monthInput === month &&
+            day === today.getDate();
+          return (
+            <Day
+              label={isToday
+                ? (
+                  <Lightning
+                    class={`w-4 h-4 ${day === 1 ? skipClass(offset) : ""}`}
+                  />
+                )
+                : day}
+              onClick={() => onInput(new Date(yearInput, monthInput, day))}
+              skip={day === 1 ? offset : ""}
+              subtle={(offset + day - 1) % 7 >= 5}
+            />
+          );
         })}
         <Day
           label={<ArrowLeft class="w-4 h-4" />}
