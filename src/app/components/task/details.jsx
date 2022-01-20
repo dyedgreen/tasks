@@ -4,7 +4,6 @@ import { useQuery, useRows } from "@hooks/useSqlite.js";
 import useDebounced from "@hooks/useDebounced.js";
 import Button from "@app/components/button.jsx";
 import { Archive, CheckCircle, Trash } from "@app/components/icons.jsx";
-import TextInput from "@app/components/text_input.jsx";
 import TextArea from "./text_area.jsx";
 import DateInput from "./date_input/mod.jsx";
 import SquareCheck from "./square_check.jsx";
@@ -108,10 +107,10 @@ export default function Open({ id, onClose }) {
     >
       <div class="flex flex-row items-center w-full">
         <SquareCheck checked={done} onChange={setDone} />
-        <TextInput
-          class="text-base font-medium mx-4 w-full bg-inherit"
+        <TextArea
+          class="text-base font-medium mx-4 w-full bg-inherit resize-none"
           value={titleInput}
-          onChange={setTitleInput}
+          onChange={(text) => setTitleInput(text.replace(/\n/g, " "))}
           placeholder="Untitled To-Do"
         />
         <Button
@@ -121,10 +120,11 @@ export default function Open({ id, onClose }) {
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
         <TextArea
-          class="h-auto resize-none bg-inherit text-xs font-mono"
+          class="resize-none bg-inherit text-xs font-mono"
           placeholder="Add notes"
           value={descriptionInput}
           onChange={setDescriptionInput}
+          minHeight="2rem"
         />
         {checklistItems.map((item, idx) => (
           <ChecklistItem

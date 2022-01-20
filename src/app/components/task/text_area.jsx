@@ -1,21 +1,30 @@
 import { h } from "preact";
 import { useLayoutEffect, useRef } from "preact/hooks";
 
-export default function TextBox({ value, onChange, ...props }) {
+export default function TextBox({
+  value,
+  onChange,
+  minHeight = "0",
+  ...props
+}) {
   const ref = useRef();
   useLayoutEffect(() => {
-    if (ref.current) {
-      ref.current.style.height = "auto";
+    const resize = () => {
+      ref.current.style.height = minHeight;
       ref.current.style.height = ref.current.scrollHeight + "px";
-    }
-    const listener = (event) => {
+    };
+    if (ref.current) resize();
+    const inputListener = (event) => {
       if (ref.current === event.target) {
-        ref.current.style.height = "auto";
-        ref.current.style.height = ref.current.scrollHeight + "px";
+        resize();
       }
     };
-    document.addEventListener("input", listener);
-    return () => document.removeEventListener("input", listener);
+    document.addEventListener("input", inputListener);
+    window.addEventListener("resize", resize);
+    return () => {
+      document.removeEventListener("input", inputListener);
+      window.removeEventListener("resize", resize);
+    };
   }, [ref]);
 
   return (

@@ -2,8 +2,8 @@ import { h } from "preact";
 import { useQuery } from "@hooks/useSqlite.js";
 import useDebounced from "@hooks/useDebounced.js";
 import { Trash } from "@app/components/icons.jsx";
-import TextInput from "@app/components/text_input.jsx";
 import Button from "@app/components/button.jsx";
+import TextArea from "./text_area.jsx";
 import CircleCheck from "./circle_check.jsx";
 
 const LAST_ITEM_ID = "fd9517608-checklist-last-item-input";
@@ -40,6 +40,7 @@ export default function ChecklistItem({
 
   const onEnter = (event) => {
     if (event.keyCode === 13) {
+      event.preventDefault();
       onAddChecklist();
       setTimeout(() => document.getElementById(LAST_ITEM_ID).focus(), 50);
     }
@@ -48,15 +49,16 @@ export default function ChecklistItem({
   return (
     <div class="flex space-x-2 items-center px-1 rounded dark:bg-slate-800 bg-slate-200">
       <CircleCheck checked={done} onChange={toggleDone} />
-      <TextInput
+      <TextArea
         id={isLastItem ? LAST_ITEM_ID : undefined}
-        class={`h-8 grow text-sm bg-inherit ${
+        class={`py-1.5 grow text-sm bg-inherit resize-none ${
           done
             ? "line-through text-slate-500"
             : ""
         }`}
+        minHeight="2rem"
         value={titleInput}
-        onChange={setTitleInput}
+        onChange={(text) => setTitleInput(text.replace(/\n/g, ""))}
         onKeyPress={onEnter}
         placeholder="Add a checklist item"
       />
