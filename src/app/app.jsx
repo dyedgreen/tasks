@@ -8,6 +8,7 @@ import Ideas from "@app/views/ideas.jsx";
 import Today from "@app/views/today.jsx";
 import Planned from "@app/views/planned.jsx";
 import Archive from "@app/views/archive.jsx";
+import Search from "@app/views/search.jsx";
 import Error from "@app/views/error.jsx";
 import schema from "@app/schema.js";
 
@@ -32,6 +33,9 @@ function Navigation() {
       break;
     case "archive":
       viewBody = <Archive />;
+      break;
+    case "search":
+      viewBody = <Search />;
       break;
     default:
       viewBody = null;

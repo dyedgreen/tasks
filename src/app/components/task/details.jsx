@@ -32,7 +32,12 @@ export default function Open({ id, onClose }) {
   );
   const [titleInput, setTitleInput] = useDebounced(
     title,
-    (title) => titleQuery({ id, title, now: new Date() }),
+    (title) =>
+      titleQuery({
+        id,
+        title: title.replace(/\s+/g, " ").trim(),
+        now: new Date(),
+      }),
   );
 
   const descriptionQuery = useQuery(

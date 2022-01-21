@@ -4,6 +4,7 @@ import { useToday } from "@hooks/useNow.js";
 import { Clock, Lightning } from "@app/components/icons.jsx";
 import Task from "@app/components/task/mod.jsx";
 import EmptyView from "@app/components/empty_view.jsx";
+import IconHeader from "@app/components/icon_header.jsx";
 
 export default function TodayView() {
   const today = useToday();
@@ -27,21 +28,11 @@ export default function TodayView() {
       <>
         {tasksDueToday.map((task) => <Task key={task.id} {...task} />)}
         {tasksDueBefore.length > 0 && (
-          <div
-            class={`
-              flex justify-start items-center space-x-4 text-slate-500
-              ${tasksDueToday.length ? "pt-4" : ""}
-            `}
-          >
-            <Clock class="w-6 h-6" />
-            <h2 class="
-              grow border-t-2 mt-1
-              text-sm font-semibold
-              dark:border-slate-600 border-slate-300 text-slate-500
-            ">
-              Due Before Today
-            </h2>
-          </div>
+          <IconHeader
+            icon={Clock}
+            title="Due Before Today"
+            style={tasksDueToday.length ? "pt-4" : ""}
+          />
         )}
         {tasksDueBefore.map((task) => <Task key={task.id} {...task} />)}
       </>

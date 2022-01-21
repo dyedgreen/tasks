@@ -6,6 +6,7 @@ import {
   Calendar,
   Lightning,
   Plus,
+  Search,
 } from "@app/components/icons.jsx";
 import Button from "@app/components/button.jsx";
 
@@ -28,6 +29,10 @@ export default function ViewHeader({ activeView }) {
     case "archive":
       name = "Archive";
       icon = <Archive class="w-6 h-6 text-green-500" />;
+      break;
+    case "search":
+      name = "Search";
+      icon = <Search class="w-6 h-6 text-slate-500" />;
       break;
     default:
       return null;
@@ -62,13 +67,15 @@ export default function ViewHeader({ activeView }) {
   );
   const archiveCompletedTasks = () => archiveQuery({ now: new Date() });
 
+  const showActions = ["ideas", "today", "planned"].includes(activeView);
+
   return (
     <div class="flex flex-col sm:flex-row w-full items-center justify-between">
       <div class="flex space-x-4 items-center">
         {icon}
         <h1 class="text-xl font-semibold dark:text-white">{name}</h1>
       </div>
-      {activeView != "archive" && (
+      {showActions && (
         <div class="flex space-x-4 items-center">
           <Button
             icon={<Plus />}

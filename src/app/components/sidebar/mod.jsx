@@ -10,6 +10,7 @@ import {
   Moon,
   Plus,
   Refresh,
+  Search,
   Sun,
 } from "@app/components/icons.jsx";
 import { useToday } from "@hooks/useNow.js";
@@ -61,7 +62,6 @@ export default function Sidebar() {
           title="Ideas"
           badge={ideasCount > 0 ? ideasCount : null}
         />
-        <div class="h-1" />
         <Item
           selected={activeView === "today"}
           onClick={() => setActiveView("today")}
@@ -75,11 +75,18 @@ export default function Sidebar() {
           icon={<Calendar class="text-red-500" />}
           title="Planned"
         />
+        <div class="h-1" />
         <Item
           selected={activeView === "archive"}
           onClick={() => setActiveView("archive")}
           icon={<Archive class="text-green-500" />}
           title="Archive"
+        />
+        <Item
+          selected={activeView === "search"}
+          onClick={() => setActiveView("search")}
+          icon={<Search class="text-slate-500" />}
+          title="Search"
         />
       </div>
       <div class="space-y-1">
