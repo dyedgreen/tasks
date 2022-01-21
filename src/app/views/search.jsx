@@ -14,14 +14,14 @@ export default function SearchView() {
     `SELECT id, title, done FROM tasks
      WHERE (instr(lower(title), lower(:query)) OR instr(lower(description), lower(:query)))
      AND archived IS NULL AND :query <> ''
-     ORDER BY created DESC`,
+     ORDER BY created DESC LIMIT 100`,
     { query },
   );
   const matchingArchivedTasks = useRows(
     `SELECT id, title, done FROM tasks
      WHERE (instr(lower(title), lower(:query)) OR instr(lower(description), lower(:query)))
      AND archived NOT NULL AND :query <> ''
-     ORDER BY created DESC`,
+     ORDER BY created DESC LIMIT 100`,
     { query },
   );
 

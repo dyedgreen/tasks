@@ -40,7 +40,8 @@ export default function ViewHeader({ activeView }) {
 
   const addTaskQuery = useQuery(
     `INSERT INTO tasks (title, due, created, updated)
-     VALUES (:title, :due, :created, :updated)`,
+     VALUES (:title, :due, :created, :updated)
+     RETURNING id`,
   );
   const addEmptyTask = () => {
     const now = new Date();
@@ -58,7 +59,19 @@ export default function ViewHeader({ activeView }) {
         due = null;
         break;
     }
-    addTaskQuery({ title: "", due, created: now, updated: now });
+    const [{ id }] = addTaskQuery({
+      title: "",
+      due,
+      created: now,
+      updated: now,
+    });
+    const DELAY = 25;
+    requestAnimationFrame(() => {
+      document.getElementById(`open-button-task-${id}`).click();
+      requestAnimationFrame(() =>
+        document.getElementById(`title-input-task-${id}`).focus()
+      );
+    });
   };
 
   const archiveQuery = useQuery(

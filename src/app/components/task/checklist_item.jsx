@@ -6,7 +6,7 @@ import Button from "@app/components/button.jsx";
 import TextArea from "./text_area.jsx";
 import CircleCheck from "./circle_check.jsx";
 
-const LAST_ITEM_ID = "fd9517608-checklist-last-item-input";
+export const LAST_ITEM_ID = "fd9517608-checklist-last-item-input";
 
 export default function ChecklistItem({
   id,
@@ -42,7 +42,9 @@ export default function ChecklistItem({
     if (event.keyCode === 13) {
       event.preventDefault();
       onAddChecklist();
-      setTimeout(() => document.getElementById(LAST_ITEM_ID).focus(), 50);
+      requestAnimationFrame(() =>
+        document.getElementById(LAST_ITEM_ID).focus()
+      );
     }
   };
 

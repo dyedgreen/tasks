@@ -17,16 +17,15 @@ function Closed({ id, title, done, onOpen }) {
     <div class="flex flex-row items-center w-full">
       <SquareCheck checked={done} onChange={setDone} />
       <button
-        class="text-sm text-left font-medium pl-4 dark:text-white"
+        id={`open-button-task-${id}`}
+        class={`text-sm text-left font-medium pl-4 ${
+          title?.length > 0 && !done
+            ? "dark:text-white"
+            : "dark:text-gray-600 text-gray-400"
+        } ${done ? "line-through" : ""}`}
         onClick={onOpen}
       >
-        {title != null && title.length > 0
-          ? title
-          : (
-            <span class="dark:text-gray-600 text-gray-400">
-              Untitled To-Do
-            </span>
-          )}
+        {title?.length > 0 ? title : "Untitled To-Do"}
       </button>
     </div>
   );

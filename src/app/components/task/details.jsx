@@ -7,7 +7,7 @@ import { Archive, CheckCircle, Trash } from "@app/components/icons.jsx";
 import TextArea from "./text_area.jsx";
 import DateInput from "./date_input/mod.jsx";
 import SquareCheck from "./square_check.jsx";
-import ChecklistItem from "./checklist_item.jsx";
+import ChecklistItem, { LAST_ITEM_ID } from "./checklist_item.jsx";
 
 export default function Open({ id, onClose }) {
   const [{ title, description, done, due, archived }] = useRows(
@@ -53,6 +53,7 @@ export default function Open({ id, onClose }) {
   );
   const onAddChecklist = () => {
     checklistQuery({ id });
+    requestAnimationFrame(() => document.getElementById(LAST_ITEM_ID).focus());
   };
 
   const archiveQuery = useQuery(
@@ -110,9 +111,10 @@ export default function Open({ id, onClose }) {
       dark:text-white dark:bg-slate-900 bg-slate-50
     "
     >
-      <div class="flex flex-row items-center w-full">
+      <div class="flex flex-row items-start w-full pt-0.5">
         <SquareCheck checked={done} onChange={setDone} />
         <TextArea
+          id={`title-input-task-${id}`}
           class="text-base font-medium mx-4 w-full bg-inherit resize-none"
           value={titleInput}
           onChange={(text) => setTitleInput(text.replace(/\n/g, " "))}
@@ -121,6 +123,7 @@ export default function Open({ id, onClose }) {
         <Button
           title={dueDateChanged ? "Save" : "Done"}
           onClick={closeAndSaveDueDate}
+          style="-mt-0.5"
         />
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
