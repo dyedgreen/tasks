@@ -25,7 +25,7 @@ export default function ChecklistItem({
   );
   const [titleInput, setTitleInput] = useDebounced(
     title,
-    (title) => titleQuery({ id, title }),
+    (title) => titleQuery({ id, title: title.replace(/\s+/g, " ").trim() }),
   );
 
   const deleteQuery = useQuery(

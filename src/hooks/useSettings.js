@@ -33,3 +33,12 @@ export function useActiveView() {
     (viewName) => set("activeview", viewName.toString()),
   ];
 }
+
+/** The current search term. */
+export function useSearchQuery() {
+  const [{ searchquery }, set] = useSettings();
+  return [
+    typeof searchquery === "string" ? searchquery : "",
+    (query) => set("searchquery", query.toString()),
+  ];
+}
