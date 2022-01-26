@@ -103,9 +103,12 @@ export default function SearchDate({ setHasInput, onChange }) {
     setHasInput(query.length > 0);
   }, [setHasInput, query]);
 
+  useEffect(() => document.getElementById("search-date-input").focus(), []);
+
   return (
     <div class="w-full">
       <TextInput
+        id="search-date-input"
         class="w-full bg-inherit text-inherit text-center font-semibold p-2"
         value={query}
         onChange={setQuery}

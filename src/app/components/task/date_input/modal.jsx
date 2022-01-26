@@ -4,6 +4,7 @@ import { useEffect, useRef } from "preact/hooks";
 export default function Modal({ onClose, children, ...props }) {
   const refOuter = useRef();
   const refInner = useRef();
+
   useEffect(() => {
     const onEvent = (event) => {
       if (
@@ -17,6 +18,18 @@ export default function Modal({ onClose, children, ...props }) {
     refOuter.current?.addEventListener("mousedown", onEvent);
     return () => refOuter.current?.removeEventListener("mousedown", onEvent);
   }, [refOuter, refInner, onClose]);
+
+  useEffect(() => {
+    const onEsc = (event) => {
+      if (event.keyCode === 27) {
+        event.preventDefault();
+        event.stopPropagation();
+        onClose();
+      }
+    };
+    refOuter.current?.addEventListener("keypress", onEsc);
+    return () => refOuter.current?.removeEventListener("keypress", onEsc);
+  }, [refOuter, onClose]);
 
   return (
     <div

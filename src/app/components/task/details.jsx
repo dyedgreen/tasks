@@ -40,6 +40,15 @@ export default function Open({ id, onClose }) {
       }),
   );
 
+  const onTitleEnter = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      requestAnimationFrame(() =>
+        document.getElementById(`description-input-task-${id}`).focus()
+      );
+    }
+  };
+
   const descriptionQuery = useQuery(
     `UPDATE tasks SET description = :description, updated = :now WHERE id = :id`,
   );
@@ -88,6 +97,17 @@ export default function Open({ id, onClose }) {
     onClose();
   };
 
+  useEffect(() => {
+    const onEsc = (event) => {
+      if (event.keyCode === 27) {
+        event.preventDefault();
+        closeAndSaveDueDate();
+      }
+    };
+    document.addEventListener("keypress", onEsc);
+    return () => document.removeEventListener("keypress", onEsc);
+  }, [closeAndSaveDueDate]);
+
   const ref = useRef();
   useEffect(() => {
     const onEvent = (event) => {
@@ -118,6 +138,7 @@ export default function Open({ id, onClose }) {
           class="text-base font-medium mx-4 w-full bg-inherit resize-none"
           value={titleInput}
           onChange={(text) => setTitleInput(text.replace(/\n/g, " "))}
+          onKeyPress={onTitleEnter}
           placeholder="Untitled To-Do"
         />
         <Button
@@ -128,6 +149,7 @@ export default function Open({ id, onClose }) {
       </div>
       <div class="flex flex-col ml-10 mt-2 space-y-2">
         <TextArea
+          id={`description-input-task-${id}`}
           class="resize-none bg-inherit text-xs font-mono"
           placeholder="Add notes"
           value={descriptionInput}
