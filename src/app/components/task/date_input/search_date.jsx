@@ -23,7 +23,7 @@ const MONTHS = [
 function maybeMonth(text) {
   if (text.length > 0) {
     for (let idx = 0; idx < MONTHS.length; idx++) {
-      if (MONTHS[idx].includes(text.toLowerCase())) return idx + 1;
+      if (MONTHS[idx].startsWith(text.toLowerCase())) return idx + 1;
     }
   } else {
     return null;
@@ -82,13 +82,21 @@ export function fuzzySearch(query) {
         return [new Date(numbers[2], numbers[1] - 1, numbers[0])];
     }
   } else {
+    const thisDay = now.getDay();
     const dates = [
       ["yesterday", new Date(thisYear, thisMonth, thisDate - 1)],
       ["today", new Date(thisYear, thisMonth, thisDate)],
       ["tomorrow", new Date(thisYear, thisMonth, thisDate + 1)],
       ["next week", new Date(thisYear, thisMonth, thisDate + 7)],
+      ["sunday", new Date(thisYear, thisMonth, thisDate - thisDay + 7)],
+      ["monday", new Date(thisYear, thisMonth, thisDate - thisDay + 1)],
+      ["tuesday", new Date(thisYear, thisMonth, thisDate - thisDay + 2)],
+      ["wednesday", new Date(thisYear, thisMonth, thisDate - thisDay + 3)],
+      ["thursday", new Date(thisYear, thisMonth, thisDate - thisDay + 4)],
+      ["friday", new Date(thisYear, thisMonth, thisDate - thisDay + 5)],
+      ["saturday", new Date(thisYear, thisMonth, thisDate - thisDay + 6)],
     ];
-    return dates.filter(([str, _]) => str.includes(query.toLowerCase()))
+    return dates.filter(([str, _]) => str.startsWith(query.toLowerCase()))
       .map(([_, date]) => date);
   }
 
