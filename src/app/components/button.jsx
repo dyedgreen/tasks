@@ -4,7 +4,7 @@ export default function Button({ icon, title, onClick, flat, style }) {
   return (
     <button
       class={`
-        flex py-1 space-x-2
+        flex py-1 space-x-2 items-center
         leading-5 text-sm font-bold rounded
       ${
         flat

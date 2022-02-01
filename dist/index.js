@@ -14,7 +14,7 @@ var FI=Object.defineProperty;var wI=(A,g,I)=>g in A?FI(A,g,{enumerable:!0,config
       flex flex-col shrink-0 justify-between p-2
       dark:bg-slate-900 bg-gray-200 dark:text-white
     `},Q("div",{class:"space-y-1"},Q("h1",{class:"sm:text-xl font-semibold mt-2 mb-3 px-2"},"Tasks"),Q(f,{selected:C==="ideas",onClick:()=>E("ideas"),icon:Q(CA,{class:"text-blue-500"}),title:"Ideas",badge:i>0?i:null}),Q(f,{selected:C==="today",onClick:()=>E("today"),icon:Q(e,{class:"text-yellow-500"}),title:"Today",badge:D>0?D:null}),Q(f,{selected:C==="planned",onClick:()=>E("planned"),icon:Q(b,{class:"text-red-500"}),title:"Planned"}),Q("div",{class:"h-1"}),Q(f,{selected:C==="archive",onClick:()=>E("archive"),icon:Q(x,{class:"text-green-500"}),title:"Archive"}),Q(f,{selected:C==="search",onClick:()=>E("search"),icon:Q(BA,{class:"text-slate-500"}),title:"Search"})),Q("div",{class:"space-y-1"},Q(f,{onClick:F,icon:Q(vg,null),title:"Backup"}),Q(f,{onClick:o,icon:Q(nA,null),title:"Restore"}),Q(f,{onClick:I,icon:A?Q(gI,null):Q($g,null),title:A?"Lights On":"Lights Off"})))}function S({icon:A,title:g,onClick:I,flat:C,style:E}){return Q("button",{class:`
-        flex py-1 space-x-2
+        flex py-1 space-x-2 items-center
         leading-5 text-sm font-bold rounded
       ${C?"text-slate-500":"px-2 dark:bg-slate-300 dark:text-black bg-slate-600 text-white"}
       ${A!=null&&!C?"pl-1":""}
