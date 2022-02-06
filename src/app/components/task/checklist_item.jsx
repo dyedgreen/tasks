@@ -61,7 +61,7 @@ export default function ChecklistItem({
         minHeight="2rem"
         value={titleInput}
         onChange={(text) => setTitleInput(text.replace(/\n/g, ""))}
-        onKeyPress={onEnter}
+        onKeyDown={onEnter}
         placeholder="Add a checklist item"
       />
       <Button onClick={onDelete} icon={<Trash />} flat />

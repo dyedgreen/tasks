@@ -104,8 +104,8 @@ export default function Open({ id, onClose }) {
         closeAndSaveDueDate();
       }
     };
-    document.addEventListener("keypress", onEsc);
-    return () => document.removeEventListener("keypress", onEsc);
+    document.addEventListener("keydown", onEsc);
+    return () => document.removeEventListener("keydown", onEsc);
   }, [closeAndSaveDueDate]);
 
   const ref = useRef();
@@ -138,7 +138,7 @@ export default function Open({ id, onClose }) {
           class="text-base font-medium mx-4 w-full bg-inherit resize-none"
           value={titleInput}
           onChange={(text) => setTitleInput(text.replace(/\n/g, " "))}
-          onKeyPress={onTitleEnter}
+          onKeyDown={onTitleEnter}
           placeholder="Untitled To-Do"
         />
         <Button

@@ -27,8 +27,8 @@ export default function Modal({ onClose, children, ...props }) {
         onClose();
       }
     };
-    refOuter.current?.addEventListener("keypress", onEsc);
-    return () => refOuter.current?.removeEventListener("keypress", onEsc);
+    refOuter.current?.addEventListener("keydown", onEsc);
+    return () => refOuter.current?.removeEventListener("keydown", onEsc);
   }, [refOuter, onClose]);
 
   return (
