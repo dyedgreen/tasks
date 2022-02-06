@@ -117,18 +117,18 @@ export default function CalendarInput({ style, onInput }) {
             value={monthInput}
             onInput={(e) => setMonthInput(+e.target.value)}
           >
-            <option value={0}>Jan</option>
-            <option value={1}>Feb</option>
-            <option value={2}>Mar</option>
-            <option value={3}>Apr</option>
-            <option value={4}>May</option>
-            <option value={5}>Jun</option>
-            <option value={6}>Jul</option>
-            <option value={7}>Aug</option>
-            <option value={8}>Sep</option>
-            <option value={9}>Oct</option>
-            <option value={10}>Nov</option>
-            <option value={11}>Dec</option>
+            <option class="text-black" value={0}>Jan</option>
+            <option class="text-black" value={1}>Feb</option>
+            <option class="text-black" value={2}>Mar</option>
+            <option class="text-black" value={3}>Apr</option>
+            <option class="text-black" value={4}>May</option>
+            <option class="text-black" value={5}>Jun</option>
+            <option class="text-black" value={6}>Jul</option>
+            <option class="text-black" value={7}>Aug</option>
+            <option class="text-black" value={8}>Sep</option>
+            <option class="text-black" value={9}>Oct</option>
+            <option class="text-black" value={10}>Nov</option>
+            <option class="text-black" value={11}>Dec</option>
           </select>
         </div>
       </div>
