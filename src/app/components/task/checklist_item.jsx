@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useQuery } from "@hooks/useSqlite.js";
 import useDebounced from "@hooks/useDebounced.js";
-import { Trash } from "@app/components/icons.jsx";
+import { DragHandle, Trash } from "@app/components/icons.jsx";
 import Button from "@app/components/button.jsx";
 import TextArea from "./text_area.jsx";
 import CircleCheck from "./circle_check.jsx";
@@ -28,20 +28,27 @@ export default function ChecklistItem({
     (title) => titleQuery({ id, title: title.replace(/\s+/g, " ").trim() }),
   );
 
+  const itemIsEmpty = titleInput.length === 0;
   const deleteQuery = useQuery(
     `DELETE FROM checklist WHERE id = :id`,
   );
   const onDelete = () => {
-    const itemIsEmpty = title.length === 0;
     if (itemIsEmpty || confirm("Are you sure you want to delete this?")) {
       deleteQuery({ id });
     }
   };
 
-  const onEnter = (event) => {
+  const onKeyDown = (event) => {
     if (event.keyCode === 13) {
+      // on enter
       event.preventDefault();
       onAddChecklist();
+      requestAnimationFrame(() =>
+        document.getElementById(LAST_ITEM_ID).focus()
+      );
+    } else if (event.keyCode === 8) {
+      // on backspace
+      if (itemIsEmpty) onDelete();
       requestAnimationFrame(() =>
         document.getElementById(LAST_ITEM_ID).focus()
       );
@@ -61,10 +68,12 @@ export default function ChecklistItem({
         minHeight="2rem"
         value={titleInput}
         onChange={(text) => setTitleInput(text.replace(/\n/g, ""))}
-        onKeyDown={onEnter}
+        onKeyDown={onKeyDown}
         placeholder="Add a checklist item"
       />
-      <Button onClick={onDelete} icon={<Trash />} flat />
+      {itemIsEmpty
+        ? <Button onClick={onDelete} icon={<Trash />} flat />
+        : <Button id="reorder" onClick={() => {}} icon={<DragHandle />} flat />}
     </div>
   );
 }

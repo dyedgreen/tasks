@@ -7,6 +7,7 @@ import { Archive, CheckCircle, Trash } from "@app/components/icons.jsx";
 import TextArea from "./text_area.jsx";
 import DateInput from "./date_input/mod.jsx";
 import SquareCheck from "./square_check.jsx";
+import Reorder from "./reorder.jsx";
 import ChecklistItem, { LAST_ITEM_ID } from "./checklist_item.jsx";
 
 export default function Open({ id, onClose }) {
@@ -63,6 +64,21 @@ export default function Open({ id, onClose }) {
   const onAddChecklist = () => {
     checklistQuery({ id });
     requestAnimationFrame(() => document.getElementById(LAST_ITEM_ID).focus());
+  };
+
+  const checklistChangeItem = useQuery(
+    "UPDATE checklist SET title = :title, done = :done WHERE id = :id",
+  );
+  const onNewChecklistOrder = (order) => {
+    for (let i = 0; i < order.length; i++) {
+      const oldItem = checklistItems[i];
+      const newItem = checklistItems[order[i]];
+      checklistChangeItem({
+        id: oldItem.id,
+        title: newItem.title,
+        done: newItem.done,
+      });
+    }
   };
 
   const archiveQuery = useQuery(
@@ -156,14 +172,18 @@ export default function Open({ id, onClose }) {
           onChange={setDescriptionInput}
           minHeight="2rem"
         />
-        {checklistItems.map((item, idx) => (
-          <ChecklistItem
-            key={item.id}
-            isLastItem={idx + 1 === checklistItems.length}
-            onAddChecklist={onAddChecklist}
-            {...item}
-          />
-        ))}
+        <Reorder
+          style="space-y-2"
+          items={checklistItems.map((item, idx) => (
+            <ChecklistItem
+              key={item.id}
+              isLastItem={idx + 1 === checklistItems.length}
+              onAddChecklist={onAddChecklist}
+              {...item}
+            />
+          ))}
+          onChange={onNewChecklistOrder}
+        />
         <div class="flex justify-start space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />
           <Button

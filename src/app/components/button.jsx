@@ -1,8 +1,9 @@
 import { h } from "preact";
 
-export default function Button({ icon, title, onClick, flat, style }) {
+export default function Button({ icon, title, onClick, flat, style, id }) {
   return (
     <button
+      id={id}
       class={`
         flex py-1 space-x-2 items-center
         leading-5 text-sm font-bold rounded
