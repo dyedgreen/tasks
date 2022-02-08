@@ -10,7 +10,7 @@ import SquareCheck from "./square_check.jsx";
 import Reorder from "./reorder.jsx";
 import ChecklistItem, { LAST_ITEM_ID } from "./checklist_item.jsx";
 
-export default function Open({ id, onClose }) {
+export default function Open({ id, onClose, onRemount }) {
   const [{ title, description, done, due, archived }] = useRows(
     "SELECT * FROM tasks WHERE id = :id",
     { id },
@@ -66,10 +66,12 @@ export default function Open({ id, onClose }) {
     requestAnimationFrame(() => document.getElementById(LAST_ITEM_ID).focus());
   };
 
+  const [checklistKeys, setChecklistKeys] = useState([]);
   const checklistChangeItem = useQuery(
     "UPDATE checklist SET title = :title, done = :done WHERE id = :id",
   );
   const onNewChecklistOrder = (order) => {
+    const newChecklistKeys = [];
     for (let i = 0; i < order.length; i++) {
       const oldItem = checklistItems[i];
       const newItem = checklistItems[order[i]];
@@ -78,7 +80,10 @@ export default function Open({ id, onClose }) {
         title: newItem.title,
         done: newItem.done,
       });
+      newChecklistKeys[i] = checklistKeys[order[i]] ?? order[i];
     }
+    onRemount();
+    // setChecklistKeys(newChecklistKeys);
   };
 
   const archiveQuery = useQuery(
@@ -174,16 +179,17 @@ export default function Open({ id, onClose }) {
         />
         <Reorder
           style="space-y-2"
-          items={checklistItems.map((item, idx) => (
+          onChange={onNewChecklistOrder}
+        >
+          {checklistItems.map((item, idx) => (
             <ChecklistItem
-              key={item.id}
+              key={checklistItems[checklistKeys[idx] ?? idx].id}
               isLastItem={idx + 1 === checklistItems.length}
               onAddChecklist={onAddChecklist}
               {...item}
             />
           ))}
-          onChange={onNewChecklistOrder}
-        />
+        </Reorder>
         <div class="flex justify-start space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />
           <Button

@@ -18,7 +18,10 @@ export default function ChecklistItem({
   const doneQuery = useQuery(
     `UPDATE checklist SET done = :done WHERE id = :id`,
   );
-  const toggleDone = () => doneQuery({ id, done: !done });
+  const toggleDone = () => {
+    console.log(id);
+    doneQuery({ id, done: !done });
+  };
 
   const titleQuery = useQuery(
     `UPDATE checklist SET title = :title WHERE id = :id`,
@@ -33,6 +36,7 @@ export default function ChecklistItem({
     `DELETE FROM checklist WHERE id = :id`,
   );
   const onDelete = () => {
+    console.log(id);
     if (itemIsEmpty || confirm("Are you sure you want to delete this?")) {
       deleteQuery({ id });
     }
@@ -48,10 +52,12 @@ export default function ChecklistItem({
       );
     } else if (event.keyCode === 8) {
       // on backspace
-      if (itemIsEmpty) onDelete();
-      requestAnimationFrame(() =>
-        document.getElementById(LAST_ITEM_ID).focus()
-      );
+      if (itemIsEmpty) {
+        onDelete();
+        requestAnimationFrame(() =>
+          document.getElementById(LAST_ITEM_ID)?.focus()
+        );
+      }
     }
   };
 
@@ -71,9 +77,7 @@ export default function ChecklistItem({
         onKeyDown={onKeyDown}
         placeholder="Add a checklist item"
       />
-      {itemIsEmpty
-        ? <Button onClick={onDelete} icon={<Trash />} flat />
-        : <Button id="reorder" onClick={() => {}} icon={<DragHandle />} flat />}
+      <Button id="reorder" onClick={() => {}} icon={<DragHandle />} flat />
     </div>
   );
 }

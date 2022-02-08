@@ -38,6 +38,10 @@ export default function Task({ id, title, done }) {
       <Details
         id={id}
         onClose={() => setOpen(false)}
+        onRemount={() => {
+          setOpen(false);
+          requestAnimationFrame(() => setOpen(true));
+        }}
       />
     );
   } else {

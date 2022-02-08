@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 function targetIsHandle(ref, event) {
   let current = event.target;
@@ -18,8 +18,11 @@ function getItem(ref, event) {
   return current;
 }
 
-export default function Reorder({ items, onChange, style }) {
+export default function Reorder({ children, onChange, style }) {
+  const onChangeRef = useRef();
+  onChangeRef.current = onChange;
   const ref = useRef();
+
   useEffect(() => {
     const state = {
       dragging: false,
@@ -48,7 +51,12 @@ export default function Reorder({ items, onChange, style }) {
         // determine item order
         const before = [];
         const after = [];
-        const itemOffset = state.items[state.item].offsetTop + state.offset.y;
+        const itemHeight = state.item + 1 < state.items.length
+          ? state.items[state.item + 1].offsetTop -
+            state.items[state.item].offsetTop
+          : state.items[state.item].scrollHeight;
+        const itemOffset = state.items[state.item].offsetTop + state.offset.y +
+          itemHeight * 0.2;
         for (let i = 0; i < state.items.length; i++) {
           if (i < state.item) {
             // items above
@@ -68,16 +76,11 @@ export default function Reorder({ items, onChange, style }) {
         }
 
         // apply changes
-        const updatedOrder = [...before, state.item, ...after];
-        for (const item of state.items) ref.current.removeChild(item);
-        for (const index of updatedOrder) {
-          console.log(index);
-          ref.current.appendChild(state.items[index]);
-        }
-        onChange(updatedOrder);
+        onChangeRef.current([...before, state.item, ...after]);
 
         // cleanup
         state.items[state.item].style.boxShadow = "none";
+        state.items[state.item].style.zIndex = "auto";
         for (const item of state.items) {
           item.style.transform = "none";
         }
@@ -100,12 +103,15 @@ export default function Reorder({ items, onChange, style }) {
         state.items[state.item].style.transform =
           `translate(${offsetX}px, ${state.offset.y}px)`;
         state.items[state.item].style.boxShadow = "0 2px 5px 0 rgba(0,0,0,0.2)";
+        state.items[state.item].style.zIndex = "100";
+        state.items[state.item].style.position = "relative";
 
         const itemHeight = state.item + 1 < state.items.length
           ? state.items[state.item + 1].offsetTop -
             state.items[state.item].offsetTop
           : state.items[state.item].scrollHeight;
-        const itemOffset = state.items[state.item].offsetTop + state.offset.y;
+        const itemOffset = state.items[state.item].offsetTop + state.offset.y +
+          itemHeight * 0.2;
         for (let i = 0; i < state.items.length; i++) {
           if (i < state.item) {
             // items above
@@ -136,6 +142,7 @@ export default function Reorder({ items, onChange, style }) {
       document.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("mousemove", onMouseMove);
     };
-  }, [ref]);
-  return <div class={style} ref={ref}>{items}</div>;
+  }, [ref, onChangeRef]);
+
+  return <div class={style} ref={ref}>{children}</div>;
 }
