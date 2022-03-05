@@ -159,7 +159,7 @@ export default function Open({ id, onClose, onRemount }) {
           placeholder="Untitled To-Do"
         />
         <Button
-          title={dueDateChanged ? "Save" : "Done"}
+          title={dueDateChanged ? "Save" : "Close"}
           onClick={closeAndSaveDueDate}
           style="-mt-0.5"
         />
