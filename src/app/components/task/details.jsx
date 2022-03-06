@@ -10,7 +10,7 @@ import SquareCheck from "./square_check.jsx";
 import Reorder from "./reorder.jsx";
 import ChecklistItem, { LAST_ITEM_ID } from "./checklist_item.jsx";
 
-export default function Open({ id, onClose, onRemount }) {
+export default function Open({ id, onClose }) {
   const [{ title, description, done, due, archived }] = useRows(
     "SELECT * FROM tasks WHERE id = :id",
     { id },
@@ -79,7 +79,6 @@ export default function Open({ id, onClose, onRemount }) {
         done: newItem.done,
       });
     }
-    onRemount();
   };
 
   const archiveQuery = useQuery(
@@ -176,16 +175,16 @@ export default function Open({ id, onClose, onRemount }) {
         <Reorder
           style="space-y-2"
           onChange={onNewChecklistOrder}
-        >
-          {checklistItems.map((item, idx) => (
+          items={checklistItems}
+          render={(item, idx) => (
             <ChecklistItem
               key={item.id}
               isLastItem={idx + 1 === checklistItems.length}
               onAddChecklist={onAddChecklist}
               {...item}
             />
-          ))}
-        </Reorder>
+          )}
+        />
         <div class="flex justify-start space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />
           <Button

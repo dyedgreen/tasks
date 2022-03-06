@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 
 function targetIsHandle(ref, event) {
   let current = event.target;
@@ -18,10 +18,15 @@ function getItem(ref, event) {
   return current;
 }
 
-export default function Reorder({ children, onChange, style }) {
+export default function Reorder({ items, render, onChange, style }) {
   const onChangeRef = useRef();
   onChangeRef.current = onChange;
   const ref = useRef();
+
+  const [remount, setRemount] = useState(false);
+  useLayoutEffect(() => {
+    if (remount) setRemount(false);
+  }, [remount, setRemount]);
 
   useEffect(() => {
     const state = {
@@ -77,6 +82,7 @@ export default function Reorder({ children, onChange, style }) {
 
         // apply changes
         onChangeRef.current([...before, state.item, ...after]);
+        setRemount(true);
 
         // cleanup
         state.items[state.item].style.boxShadow = "none";
@@ -144,5 +150,9 @@ export default function Reorder({ children, onChange, style }) {
     };
   }, [ref, onChangeRef]);
 
-  return <div class={style} ref={ref}>{children}</div>;
+  return (
+    <div class={style} ref={ref}>
+      {remount ? null : items.map(render)}
+    </div>
+  );
 }
