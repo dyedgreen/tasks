@@ -106,10 +106,11 @@ export default function Open({ id, onClose }) {
   const [dueInput, setDueInput] = useState(due != null ? new Date(due) : null);
   const dueDateChanged =
     dueInput?.valueOf() !== (due != null ? new Date(due) : null)?.valueOf();
+  const saveDueDate = () => {
+    if (dueDateChanged) dueQuery({ id, due: dueInput, now: new Date() });
+  };
   const closeAndSaveDueDate = () => {
-    if (dueDateChanged) {
-      dueQuery({ id, due: dueInput, now: new Date() });
-    }
+    saveDueDate();
     onClose();
   };
 
@@ -128,8 +129,17 @@ export default function Open({ id, onClose }) {
   useEffect(() => {
     const onEvent = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
+        console.log(event);
         const sideBar = document.getElementById("sidebar");
-        if (!sideBar.contains(event.target)) closeAndSaveDueDate();
+        const rightOffset = window.outerWidth - event.screenX;
+        // Don't close when clicking the side-bar / scroll bar
+        if (!sideBar.contains(event.target) && rightOffset > 20) {
+          closeAndSaveDueDate();
+        }
+        // This is a bit hacky; but basically we probably want to save
+        // the due date, when we click into the sideBar, since it's likely
+        // that will cause a view-change.
+        if (sideBar.contains(event.target)) saveDueDate();
       }
     };
     document.addEventListener("mousedown", onEvent);
