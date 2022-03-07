@@ -131,7 +131,7 @@ export default function Open({ id, onClose }) {
       if (ref.current && !ref.current.contains(event.target)) {
         console.log(event);
         const sideBar = document.getElementById("sidebar");
-        const rightOffset = window.outerWidth - event.screenX;
+        const rightOffset = window.outerWidth - event.pageX;
         // Don't close when clicking the side-bar / scroll bar
         if (!sideBar.contains(event.target) && rightOffset > 20) {
           closeAndSaveDueDate();

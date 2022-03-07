@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:focus {
+  outline: 3px solid rgba(59, 130, 246, 0.6);
+}
