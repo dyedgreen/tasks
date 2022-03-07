@@ -195,7 +195,7 @@ export default function Open({ id, onClose }) {
             />
           )}
         />
-        <div class="flex justify-start space-x-4">
+        <div class="flex flex-col sm:flex-row justify-start sm:space-x-4">
           <DateInput value={dueInput} onChange={setDueInput} />
           <Button
             icon={<CheckCircle />}
@@ -211,6 +211,7 @@ export default function Open({ id, onClose }) {
           />
           <Button
             icon={<Trash />}
+            title={<span class="sm:hidden">Delete</span>}
             onClick={onDelete}
             flat
           />
