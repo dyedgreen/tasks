@@ -66,7 +66,7 @@ export default function ChecklistItem({
       <CircleCheck checked={done} onChange={toggleDone} />
       <TextArea
         id={isLastItem ? LAST_ITEM_ID : undefined}
-        class={`py-1.5 grow text-sm bg-inherit resize-none ${
+        class={`py-1.5 grow text-sm bg-inherit resize-none rounded-sm ${
           done
             ? "line-through text-slate-500"
             : ""

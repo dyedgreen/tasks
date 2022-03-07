@@ -55,7 +55,12 @@ export default function Open({ id, onClose }) {
   );
   const [descriptionInput, setDescriptionInput] = useDebounced(
     description ?? "",
-    (description) => descriptionQuery({ id, description, now: new Date() }),
+    (description) =>
+      descriptionQuery({
+        id,
+        description: description.replace(/^\s+/, "").replace(/\s+$/, ""),
+        now: new Date(),
+      }),
   );
 
   const checklistQuery = useQuery(
@@ -161,7 +166,7 @@ export default function Open({ id, onClose }) {
         <SquareCheck checked={done} onChange={setDone} />
         <TextArea
           id={`title-input-task-${id}`}
-          class="text-base font-medium mx-4 w-full bg-inherit resize-none"
+          class="text-base font-medium mx-4 w-full bg-inherit resize-none rounded-sm"
           value={titleInput}
           onChange={(text) => setTitleInput(text.replace(/\n/g, " "))}
           onKeyDown={onTitleEnter}
@@ -176,7 +181,7 @@ export default function Open({ id, onClose }) {
       <div class="flex flex-col ml-10 mt-2 space-y-2">
         <TextArea
           id={`description-input-task-${id}`}
-          class="resize-none bg-inherit text-xs font-mono"
+          class="resize-none bg-inherit text-xs font-mono rounded-sm"
           placeholder="Add notes"
           value={descriptionInput}
           onChange={setDescriptionInput}
