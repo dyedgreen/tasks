@@ -115,7 +115,8 @@ export default function Reorder({ items, render, onChange, style }) {
         const itemHeight = state.item + 1 < state.items.length
           ? state.items[state.item + 1].offsetTop -
             state.items[state.item].offsetTop
-          : state.items[state.item].scrollHeight;
+          : state.items[state.item].scrollHeight +
+            8 /* this is specific to the item margins we have(!) */;
         const itemOffset = state.items[state.item].offsetTop + state.offset.y +
           itemHeight * 0.2;
         for (let i = 0; i < state.items.length; i++) {
