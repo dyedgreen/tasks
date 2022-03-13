@@ -4,7 +4,7 @@ export default function EmptyView({ icon }) {
   const Icon = icon;
   return (
     <div class="
-      w-full h-2/3 flex flex-col justify-center items-center
+      w-full h-[60vh] flex flex-col justify-center items-center
       dark:text-slate-600 text-slate-400
       ">
       <Icon class="w-12 h-12" />

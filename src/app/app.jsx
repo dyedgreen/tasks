@@ -45,9 +45,11 @@ function Navigation() {
   return (
     <div class="flex w-full h-full">
       <Sidebar />
-      <div class="p-8 w-full space-y-4 overflow-y-auto">
-        <ViewHeader activeView={activeView} />
-        {viewBody}
+      <div class="p-8 w-full overflow-y-auto">
+        <div class="space-y-4 max-w-4xl mx-auto">
+          <ViewHeader activeView={activeView} />
+          {viewBody}
+        </div>
       </div>
     </div>
   );
