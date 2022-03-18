@@ -14,7 +14,15 @@ export default function DateInput({ value, onChange }) {
   const [searchHasInput, setSearchHasInput] = useState(false);
 
   const today = useToday();
-  const tomorrow = new Date(today.valueOf() + 24 * 60 * 60 * 1000);
+  let nextWorkday;
+  if (today.getDay() === 5 /* Friday */) {
+    nextWorkday = new Date(today.valueOf() + 3 * 24 * 60 * 60 * 1000);
+  } else if (today.getDay() === 6 /* Saturday */) {
+    nextWorkday = new Date(today.valueOf() + 2 * 24 * 60 * 60 * 1000);
+  } else {
+    nextWorkday = new Date(today.valueOf() + 24 * 60 * 60 * 1000);
+  }
+  let nextWorkdayDate = useDate(nextWorkday);
 
   const isToday = value != null && value.valueOf() === today.valueOf();
   const date = useDate(value ?? new Date());
@@ -51,8 +59,8 @@ export default function DateInput({ value, onChange }) {
             <Button
               icon={<Calendar class="text-red-500" />}
               style="w-full text-inherit"
-              title="Tomorrow"
-              onClick={() => onChangeAndClose(tomorrow)}
+              title={nextWorkdayDate}
+              onClick={() => onChangeAndClose(nextWorkday)}
               flat
             />
             <CalendarInput style="my-2" onInput={onChangeAndClose} />
