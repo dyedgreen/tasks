@@ -18,7 +18,9 @@ function Closed({ id, title, done, onOpen }) {
       <SquareCheck checked={done} onChange={setDone} />
       <button
         id={`open-button-task-${id}`}
-        class={`text-sm text-left font-medium pl-4 ${
+        class={`ml-2 -my-2 p-2 flex-grow
+          text-sm text-left font-medium
+          rounded-md dark:hover:bg-gray-700 hover:bg-gray-200 ${
           title?.length > 0 && !done
             ? "dark:text-white"
             : "dark:text-gray-600 text-gray-400"

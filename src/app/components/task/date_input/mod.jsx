@@ -3,7 +3,7 @@ import { useState } from "preact/hooks";
 import { useToday } from "@hooks/useNow.js";
 import useDate from "@hooks/useDate.js";
 import searchDate from "./search_date.js";
-import { Calendar, Clock, Lightning, Trash } from "@app/components/icons.jsx";
+import { Beaker, Calendar, Clock, Lightning } from "@app/components/icons.jsx";
 import Button from "@app/components/button.jsx";
 import SearchDate from "./search_date.jsx";
 import CalendarInput from "./calendar_input.jsx";
@@ -65,8 +65,8 @@ export default function DateInput({ value, onChange }) {
             />
             <CalendarInput style="my-2" onInput={onChangeAndClose} />
             <Button
-              icon={<Trash />}
-              title="Clear"
+              icon={<Beaker />}
+              title="Someday"
               style="w-full"
               onClick={() => onChangeAndClose(null)}
               flat
