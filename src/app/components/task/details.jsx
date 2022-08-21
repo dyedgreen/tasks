@@ -147,9 +147,9 @@ export default function Open({ id, onClose }) {
         if (sideBar.contains(event.target)) saveDueDate();
       }
     };
-    document.addEventListener("mousedown", onEvent);
+    document.addEventListener("mouseup", onEvent);
     return () => {
-      document.removeEventListener("mousedown", onEvent);
+      document.removeEventListener("mouseup", onEvent);
     };
   }, [ref, closeAndSaveDueDate]);
 
