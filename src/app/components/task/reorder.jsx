@@ -103,11 +103,25 @@ export default function Reorder({ items, render, onChange, style }) {
         state.offset.x += event.movementX;
         state.offset.y += event.movementY;
 
+        const itemOffsetFromParent = state.items[state.item].offsetTop -
+          ref.current.offsetTop + state.items[state.item].scrollHeight * 0.5;
+        let offsetY;
+        if (state.offset.y >= 0) {
+          offsetY = Math.min(
+            state.offset.y,
+            ref.current.clientHeight - itemOffsetFromParent,
+          );
+          offsetY += Math.log2(state.offset.y - offsetY + 1);
+        } else {
+          offsetY = Math.max(state.offset.y, -itemOffsetFromParent);
+          offsetY -= Math.log2(offsetY - state.offset.y + 1);
+        }
+
         const offsetX = Math.sign(state.offset.x) *
           Math.abs(Math.max(Math.log2(Math.abs(state.offset.x)), 0));
 
         state.items[state.item].style.transform =
-          `translate(${offsetX}px, ${state.offset.y}px)`;
+          `translate(${offsetX}px, ${offsetY}px)`;
         state.items[state.item].style.boxShadow = "0 2px 5px 0 rgba(0,0,0,0.2)";
         state.items[state.item].style.zIndex = "100";
         state.items[state.item].style.position = "relative";
@@ -117,7 +131,7 @@ export default function Reorder({ items, render, onChange, style }) {
             state.items[state.item].offsetTop
           : state.items[state.item].scrollHeight +
             8 /* this is specific to the item margins we have(!) */;
-        const itemOffset = state.items[state.item].offsetTop + state.offset.y +
+        const itemOffset = state.items[state.item].offsetTop + offsetY +
           itemHeight * 0.2;
         for (let i = 0; i < state.items.length; i++) {
           if (i < state.item) {
